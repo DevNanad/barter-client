@@ -10,7 +10,7 @@ export default function useLogout() {
         useAuthStore.setState({token: null})
         try {
             if(user_id){
-                const response = await axios.post('/logout',{user_id}, {
+                await axios.post('/logout',{user_id}, {
                     withCredentials: true
                 })
                 await queryClient.invalidateQueries({

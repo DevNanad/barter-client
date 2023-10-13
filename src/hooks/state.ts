@@ -7,7 +7,7 @@ type AuthState = {
 }
 
   
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>(() => ({
     token: null,
     user_id: '',
     isNight: false,
