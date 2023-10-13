@@ -13,7 +13,8 @@ import Signup from "./pages/Signup.tsx";
 import Verify from "./pages/Verify";
 import Login from "./pages/Login";
 import PrivateRoute from "./PrivateRoute"
-import { useAuthStore } from "./hooks/state";
+import Trader from './pages/trader/Trader.tsx'
+import Advertiser from './pages/advertiser/Advertiser.tsx'
 
 const client = new QueryClient({
   defaultOptions: {
@@ -23,8 +24,6 @@ const client = new QueryClient({
     }
   }
 })
-
-const isAuthenticated = useAuthStore.getState().token === null ? false : true
 
 const router = createBrowserRouter([
   {
@@ -46,6 +45,14 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login/>,
+      },
+      {
+        path: 'trader',
+        element: <Trader/>
+      },
+      {
+        path: 'advertiser',
+        element: <Advertiser/>
       }
     ]
   }
