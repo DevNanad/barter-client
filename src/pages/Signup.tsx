@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import shoppingImg from "../assets/global-shopping.png"
-import { registerSend } from '../api/auth';
+import { signupSend } from '../api/auth';
 import {ToastContainer, toast} from "react-toastify"
 import { Navbar } from '../components/Navbar';
 import {Helmet} from "react-helmet-async"
@@ -40,11 +40,11 @@ function Signup() {
         setShowPassword(!showPassword);
     };
 
-    //register function
+    //signup function
     const handleSignup = async (data: SignupFormData) => {
         setIsLoading(true)
         try {
-            const res = await registerSend(data.username, data.email)
+            const res = await signupSend(data.username, data.email)
 
             const responseData = await res.data
 
@@ -100,7 +100,7 @@ function Signup() {
             <Link to="/login" className='p-2'>Login</Link>
         </Navbar>
         
-        <div className="signup-container py-6 gap-5 lg:py-10 h-full w-full grid md:grid-cols-2">
+        <div className="signup-container pt-6 gap-5 lg:pt-10 h-full w-full grid md:grid-cols-2">
             <div className="signup-cloud flex justify-center items-center">
                 <img className='h-32 sm:h-48 md:h-60' src={shoppingImg} alt="global shopping image" />
             </div>

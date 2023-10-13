@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import mail from "../assets/mail.png"
-import { registerSend, registerVerify } from '../api/auth';
+import { signupSend, signupVerify } from '../api/auth';
 import {ToastContainer, toast} from "react-toastify"
 import Modal from '../components/Modal';
 import { Navbar } from '../components/Navbar';
@@ -56,7 +56,7 @@ function Verify() {
               throw new Error("One or more Fields are empty @ Continue")
             }
 
-            const res = await registerVerify(localFullname, localUsername, localEmail, localPassword, data.code)
+            const res = await signupVerify(localFullname, localUsername, localEmail, localPassword, data.code)
 
             const responseData = await res.data
 
@@ -108,7 +108,7 @@ function Verify() {
 
         setIsEmailChanging(true)
 
-        const res = await registerSend(localUsername, data.email)
+        const res = await signupSend(localUsername, data.email)
         const responseData = await res.data
 
         setIsEmailChanging(false)
@@ -154,7 +154,7 @@ function Verify() {
           throw new Error("One or more Fields are empty @ Resend")
         }
 
-        const res = await registerSend(localUsername, localEmail)
+        const res = await signupSend(localUsername, localEmail)
         const responseData = await res.data
 
         setIsResendLoading(false)

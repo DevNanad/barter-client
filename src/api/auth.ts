@@ -1,10 +1,10 @@
 import axios from 'axios';
 const apiUrl = import.meta.env.VITE_API_URL
 
-export const registerSend = async (username: string, email: string) => {
+export const signupSend = async (username: string, email: string) => {
 
     try {
-      const res = await axios.post(`${apiUrl}/api/v1/user/register-send`, 
+      const res = await axios.post(`${apiUrl}/user/signup-send`, 
       JSON.stringify({ username, email }),
       {
         headers: { "Content-Type": "application/json"},
@@ -16,10 +16,10 @@ export const registerSend = async (username: string, email: string) => {
     }
   
 }
-export const registerVerify = async (fullname: string, username: string, email: string, password: string, code: string) => {
+export const signupVerify = async (fullname: string, username: string, email: string, password: string, code: string) => {
 
     try {
-      const res = await axios.post(`${apiUrl}/api/v1/user/register-verify`, 
+      const res = await axios.post(`${apiUrl}/user/signup-verify`, 
       JSON.stringify({ fullname, username, email, password, code}),
       {
         headers: { "Content-Type": "application/json"},
@@ -30,4 +30,18 @@ export const registerVerify = async (fullname: string, username: string, email: 
       throw err;
     }
   
-  }
+}
+export const login = async (usernameORemail: string, password: string) => {
+    try {
+      const res = await axios.post(`${apiUrl}/user/login`, 
+      JSON.stringify({ usernameORemail, password}),
+      {
+        headers: { "Content-Type": "application/json"},
+        withCredentials: true
+      })
+      return res
+    } catch (err) {
+      throw err;
+    }
+  
+}
