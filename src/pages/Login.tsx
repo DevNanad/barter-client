@@ -39,10 +39,6 @@ function Login() {
             const res = await login(data.usernameORemail, data.password)
 
             const responseData = await res.data
-
-            console.log(responseData);
-            
-            
             setIsLoading(false)
             
             if(responseData.user_type === "trader"){

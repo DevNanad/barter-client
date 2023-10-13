@@ -4,6 +4,8 @@ import {Outlet, useNavigate} from "react-router-dom"
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuthStore } from "./hooks/state";
 import useRefreshToken from "./hooks/useRefreshToken";
+import Lottie from "lottie-react"
+import loader from "./assets/loader.json"
 
 function App() {
   const navigate = useNavigate();
@@ -58,7 +60,12 @@ function App() {
   return (
     <HelmetProvider>
       <div className="bg-[#BEADFA] min-h-screen">
-        <Outlet/>
+        {isLoading 
+          ? <div className="div w-full h-screen absolute flex justify-center items-center">
+              <Lottie animationData={loader} className="w-40 h-40 md:w-52 md:h-52 drop-shadow-2xl" loop={true} />
+            </div>
+          : <Outlet />
+        }
       </div>
     </HelmetProvider>
   )
