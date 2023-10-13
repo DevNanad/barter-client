@@ -12,7 +12,6 @@ import Landing from "./pages/Landing";
 import Signup from "./pages/Signup.tsx";
 import Verify from "./pages/Verify";
 import Login from "./pages/Login";
-import PrivateRoute from "./PrivateRoute"
 import Trader from './pages/trader/Trader.tsx'
 import Advertiser from './pages/advertiser/Advertiser.tsx'
 
