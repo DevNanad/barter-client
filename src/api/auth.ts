@@ -45,3 +45,31 @@ export const login = async (usernameORemail: string, password: string) => {
     }
   
 }
+export const forgot = async (email: string) => {
+    try {
+      const res = await axios.post(`${apiUrl}/user/forgot-password`, 
+      JSON.stringify({ email }),
+      {
+        headers: { "Content-Type": "application/json"},
+        withCredentials: true
+      })
+      return res
+    } catch (err) {
+      throw err;
+    }
+  
+}
+export const reset = async (id: string, token: string, password: string) => {
+    try {
+      const res = await axios.post(`${apiUrl}/user/reset-password/${id}/${token}`, 
+      JSON.stringify({ password }),
+      {
+        headers: { "Content-Type": "application/json"},
+        withCredentials: true
+      })
+      return res
+    } catch (err) {
+      throw err;
+    }
+  
+}
