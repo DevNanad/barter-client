@@ -137,7 +137,7 @@ function Login() {
                       <input className='h-4 w-4 bg-transparent checked:bg-red-500' type="checkbox" onChange={handlePasswordToggle} />
                       <p className='text-sm font-medium text-dos'>Show Password</p>
                     </div>
-                    <p className='text-center text-sm font-normal py-2 text-violet-300'>Forgot password?</p>
+                    <Link to='/forgot-password' className='text-center text-sm font-normal py-2 text-violet-300'>Forgot password?</Link>
 
                     {isLoading
                         ? <button className='py-3 px-3 mt-2 md:mt-6 bg-dos rounded-md font-bold text-gray-100 uppercase' disabled >Logging in...</button>

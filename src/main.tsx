@@ -14,6 +14,8 @@ import Verify from "./pages/Verify";
 import Login from "./pages/Login";
 import Trader from './pages/trader/Trader.tsx'
 import Advertiser from './pages/advertiser/Advertiser.tsx'
+import Forgot from './pages/Forgot.tsx'
+import Reset from './pages/Reset.tsx'
 
 const client = new QueryClient({
   defaultOptions: {
@@ -44,6 +46,14 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login/>,
+      },
+      {
+        path: 'forgot-password',
+        element: <Forgot/>
+      },
+      {
+        path: 'reset-password/:id/:token',
+        element: <Reset/>
       },
       {
         path: 'trader',
