@@ -1,7 +1,7 @@
 import { z, ZodType } from 'zod'
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import airDeliver from "../assets/air-delivery.png"
 import {ToastContainer, toast} from "react-toastify"
@@ -18,6 +18,7 @@ type LoginFormData = {
 function Login() {
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false);
+    const {token} = useAuthStore((state) => state)
     const navigate = useNavigate();
 
     const schema: ZodType<LoginFormData> = z.object({
@@ -31,6 +32,19 @@ function Login() {
     const handlePasswordToggle = () => {
         setShowPassword(!showPassword);
     };
+
+    useEffect(() => {
+        if(token){ 
+            const parsed = JSON.parse(token);
+            if (parsed.user_type === 'trader') {
+              navigate('/trader', {replace: true});
+            } else if (parsed.user_type === 'advertiser') {
+              navigate('/advertiser', {replace: true});
+            }else {
+              console.log("Here App component");
+            }
+        }
+      }, [token])
 
     //login function
     const handleLogin = async (data: LoginFormData) => {
