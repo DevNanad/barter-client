@@ -8,7 +8,8 @@ export default function useRefreshToken() {
       withCredentials: true,
     })
     useAuthStore.setState({token: JSON.stringify(response.data)})
-    localStorage.setItem("user_id", JSON.stringify(response.data.user_id));
+    useAuthStore.setState({user_id: response.data.user_id})
+    localStorage.setItem("user_id", response.data.user_id);
     return response.data.accessToken
   }
   return refresh

@@ -63,7 +63,8 @@ function Login() {
             }else if (responseData.user_type === 'advertiser') {
                 //navigate to advertiser dashboard
                 useAuthStore.setState({ token: JSON.stringify(responseData)})
-                localStorage.setItem('user_id', JSON.stringify(responseData.user_id))
+                useAuthStore.setState({ user_id: responseData.user_id})
+                localStorage.setItem('user_id', responseData.user_id)
                 navigate('/advertiser', {replace: true})
             }else {
                 console.log("No role specified");
