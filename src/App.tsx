@@ -1,73 +1,75 @@
-import { useEffect, useState } from "react";
-import { HelmetProvider } from "react-helmet-async";
-import {Outlet, useNavigate} from "react-router-dom"
-import 'react-toastify/dist/ReactToastify.css';
-import { useAuthStore } from "./hooks/state";
-import useRefreshToken from "./hooks/useRefreshToken";
-import Lottie from "lottie-react"
-import loader from "./assets/loader.json"
+import Landing from "./pages/Landing";
+import Signup from "./pages/Signup";
+import Verify from "./pages/Verify";
+import Login from "./pages/Login";
+import Forgot from "./pages/Forgot";
+import Reset from "./pages/Reset";
+import Trader from "./pages/trader/Trader";
+import Advertiser from "./pages/advertiser/Advertiser";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Layout from "./layout/Layout";
+import Protected from "./Protected";
+
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retryDelay: 1250,
+      staleTime: 1000 * 60 * 10
+    }
+  }
+})
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout/>,
+    children: [
+      {
+        path: '',
+        element: <Landing/>,
+      },
+      {
+        path: 'signup',
+        element: <Signup/>,
+      },
+      {
+        path: 'verify',
+        element: <Verify/>,
+      },
+      {
+        path: 'login',
+        element: <Login/>,
+      },
+      {
+        path: 'forgot-password',
+        element: <Forgot/>
+      },
+      {
+        path: 'reset-password/:id/:token',
+        element: <Reset/>
+      },
+      {
+        path: 'trader',
+        element: <Protected element={<Trader/>}/>
+      },
+      {
+        path: 'advertiser',
+        element: <Protected element={<Advertiser/>}/> 
+      }
+    ]
+  }
+])
 
 function App() {
-  const navigate = useNavigate();
-  const { isNight, token } = useAuthStore((state) => state)
-  const [isLoading, setIsLoading] = useState(true);
-  const refresh = useRefreshToken();
-
-
-  useEffect(() => {
-    let isMounted = true;
-  
-    const verifyRefreshToken = async () => {
-      try {
-        await refresh();
-      } catch (err) {
-        console.error(err);
-      } finally {
-        isMounted && setIsLoading(false);
-      }
-    };
-
-    !token ? verifyRefreshToken() : setIsLoading(false)
-  
-  
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-      useAuthStore.setState({ isNight: true });
-    } else {
-      document.documentElement.classList.remove('dark');
-      useAuthStore.setState({ isNight: false });
-    }
-  
-    return () => {
-      isMounted = false;
-    };
-  }, [isNight]);
-  
-
-  useEffect(() => {
-    if(token){ 
-        const parsed = JSON.parse(token);
-        if (parsed.user_type === 'trader') {
-          navigate('/trader', {replace: true});
-        } else if (parsed.user_type === 'advertiser') {
-          navigate('/advertiser', {replace: true});
-        }else {
-          console.log("Here App component");
-        }
-    }
-    
-  }, [isLoading, token])
   return (
-    <HelmetProvider>
-      <div className="bg-[#BEADFA] min-h-screen">
-        {isLoading 
-          ? <div className="div w-full h-screen absolute flex justify-center items-center">
-              <Lottie animationData={loader} className="w-40 h-40 md:w-52 md:h-52 drop-shadow-2xl" loop={true} />
-            </div>
-          : <Outlet />
-        }
-      </div>
-    </HelmetProvider>
+    <>
+      <QueryClientProvider client={client}>
+        <RouterProvider router={router}/>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </>
   )
 }
 
