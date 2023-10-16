@@ -6,6 +6,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import Lottie from 'lottie-react';
 import loader from "../assets/loader.json"
 import 'react-toastify/dist/ReactToastify.css';
+import { ThemeProvider } from "../../@/components/theme-provider"
 
 
 export default function Layout() {
@@ -61,8 +62,9 @@ export default function Layout() {
     
   }, [isLoading, token])
   return (
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <HelmetProvider>
-          <div className="bg-[#BEADFA] min-h-screen">
+          <div className="bg-[#BEADFA] dark:bg-[#09090b] min-h-screen">
             {isLoading 
               ? <div className="div w-full h-screen absolute flex justify-center items-center">
                   <Lottie animationData={loader} className="w-40 h-40 md:w-52 md:h-52 drop-shadow-2xl" loop={true} />
@@ -71,5 +73,6 @@ export default function Layout() {
             }
           </div>
         </HelmetProvider>
+    </ThemeProvider>
   )
 }
