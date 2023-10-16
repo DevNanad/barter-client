@@ -1,0 +1,39 @@
+[
+    {
+        "id": "1",
+        "category": "Electronic Devices"
+    },
+    {
+        "id": "2",
+        "category": "Electronic Accessories"
+    },
+    {
+        "id": "3",
+        "category": "TV & Home Appliances"
+    },
+    {
+        "id": "4",
+        "category": "Health & Beauty"
+    },
+    {
+        "id": "5",
+        "category": "Babies & Toys"
+    },
+    {
+        "id": "6",
+        "category": "Home & Living"
+    },
+    {
+        "id": "7",
+        "category": "Fasion"
+    },
+    {
+        "id": "8",
+        "category": "Sports & Lifestyle"
+    },
+    {
+        "id": "9",
+        "category": "Automotive & Motorcycles"
+    }
+
+]
