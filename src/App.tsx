@@ -11,6 +11,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./layout/Layout";
 import Protected from "./Protected";
+import Profile from "./pages/trader/Profile";
+import Unprotected from "./Unprotected";
+import Notfound from "./pages/Notfound";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -27,32 +30,40 @@ const router = createBrowserRouter([
     element: <Layout/>,
     children: [
       {
+        path: "*",
+        element: <Unprotected element={<Notfound/>}/> 
+      },
+      {
         path: '',
-        element: <Landing/>,
+        element: <Unprotected element={<Landing/>}/>,
       },
       {
         path: 'signup',
-        element: <Signup/>,
+        element: <Unprotected element={<Signup/>}/>,
       },
       {
         path: 'verify',
-        element: <Verify/>,
+        element: <Unprotected element={<Verify/>}/>
       },
       {
         path: 'login',
-        element: <Login/>,
+        element: <Unprotected element={<Login/>}/>,
       },
       {
         path: 'forgot-password',
-        element: <Forgot/>
+        element: <Unprotected element={<Forgot/>}/>
       },
       {
         path: 'reset-password/:id/:token',
-        element: <Reset/>
+        element: <Unprotected element={<Reset/>} />
       },
       {
         path: 'trader',
         element: <Protected element={<Trader/>}/>
+      },
+      {
+        path: 'trader/:username',
+        element: <Protected element={<Profile/>}/>,
       },
       {
         path: 'advertiser',

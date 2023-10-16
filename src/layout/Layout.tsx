@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuthStore } from '../hooks/state';
 import useRefreshToken from '../hooks/useRefreshToken';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Lottie from 'lottie-react';
 import loader from "../assets/loader.json"
@@ -9,11 +9,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Layout() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const { isNight, token } = useAuthStore((state) => state)
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
-
+  const location = useLocation()
+  const pathname = location.pathname
 
   useEffect(() => {
     let isMounted = true;
@@ -49,9 +50,10 @@ export default function Layout() {
     if(token){ 
         const parsed = JSON.parse(token);
         if (parsed.user_type === 'trader') {
-          navigate('/trader', {replace: true});
+          navigate(pathname, {replace: true});
+          
         } else if (parsed.user_type === 'advertiser') {
-          navigate('/advertiser', {replace: true});
+          navigate(pathname, {replace: true});
         }else {
           console.log("Here App component");
         }

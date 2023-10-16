@@ -1,7 +1,7 @@
 import { z, ZodType } from 'zod'
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import airDeliver from "../assets/air-delivery.png"
 import {ToastContainer, toast} from "react-toastify"
@@ -18,7 +18,6 @@ type LoginFormData = {
 function Login() {
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false);
-    const {token} = useAuthStore((state) => state)
     const navigate = useNavigate();
 
     const schema: ZodType<LoginFormData> = z.object({
@@ -33,19 +32,6 @@ function Login() {
         setShowPassword(!showPassword);
     };
 
-    useEffect(() => {
-        if(token){ 
-            const parsed = JSON.parse(token);
-            if (parsed.user_type === 'trader') {
-              navigate('/trader', {replace: true});
-            } else if (parsed.user_type === 'advertiser') {
-              navigate('/advertiser', {replace: true});
-            }else {
-              console.log("Here App component");
-            }
-        }
-      }, [token])
-
     //login function
     const handleLogin = async (data: LoginFormData) => {
         setIsLoading(true)
@@ -58,7 +44,8 @@ function Login() {
             if(responseData.user_type === "trader"){
                 //navigate to trader dashboard
                 useAuthStore.setState({ token: JSON.stringify(responseData)})
-                localStorage.setItem("user_id", JSON.stringify(responseData.user_id))
+                useAuthStore.setState({ user_id: responseData.user_id})
+                localStorage.setItem('user_id', responseData.user_id)
                 navigate('/trader', {replace: true})
             }else if (responseData.user_type === 'advertiser') {
                 //navigate to advertiser dashboard
