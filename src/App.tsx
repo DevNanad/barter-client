@@ -11,9 +11,12 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./layout/Layout";
 import Protected from "./Protected";
-import Profile from "./pages/trader/Profile";
+import TDash from "./pages/trader/TDash";
 import Unprotected from "./Unprotected";
 import Notfound from "./pages/Notfound";
+import Messages from "./pages/trader/Messages";
+import Settings from "./pages/trader/Settings";
+import Profile from "./pages/trader/Profile";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -62,8 +65,22 @@ const router = createBrowserRouter([
         element: <Protected element={<Trader/>}/>
       },
       {
-        path: 'trader/:username',
-        element: <Protected element={<Profile/>}/>,
+        path: 'trader/t',
+        element: <Protected element={<TDash/>}/>,
+        children: [
+          {
+            path: '/trader/t/messages',
+            element: <Messages/>,
+          },
+          {
+            path: '/trader/t/settings',
+            element: <Settings/>,
+          },
+          {
+            path: '/trader/t/profile/:username',
+            element: <Profile/>
+          }
+        ]
       },
       {
         path: 'advertiser',
