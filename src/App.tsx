@@ -4,7 +4,6 @@ import Verify from "./pages/Verify";
 import Login from "./pages/Login";
 import Forgot from "./pages/Forgot";
 import Reset from "./pages/Reset";
-import Trader from "./pages/trader/Trader";
 import Advertiser from "./pages/advertiser/Advertiser";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -17,6 +16,7 @@ import Notfound from "./pages/Notfound";
 import Messages from "./pages/trader/Messages";
 import Settings from "./pages/trader/Settings";
 import Profile from "./pages/trader/Profile";
+import Market from "./pages/trader/Market";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -60,26 +60,27 @@ const router = createBrowserRouter([
         path: 'reset-password/:id/:token',
         element: <Unprotected element={<Reset/>} />
       },
+      
       {
         path: 'trader',
-        element: <Protected element={<Trader/>}/>
-      },
-      {
-        path: 'trader/t',
         element: <Protected element={<TDash/>}/>,
         children: [
           {
-            path: '/trader/t/messages',
+            path: '',
+            element: <Market/>
+          },
+          {
+            path: '/trader/messages',
             element: <Messages/>,
           },
           {
-            path: '/trader/t/settings',
+            path: '/trader/settings',
             element: <Settings/>,
           },
           {
-            path: '/trader/t/profile/:username',
+            path: '/trader/:username',
             element: <Profile/>
-          }
+          },
         ]
       },
       {
