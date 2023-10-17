@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuthStore } from '../hooks/state';
 import useRefreshToken from '../hooks/useRefreshToken';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Lottie from 'lottie-react';
 import loader from "../assets/loader.json"
@@ -10,12 +10,9 @@ import { ThemeProvider } from "../../@/components/theme-provider"
 
 
 export default function Layout() {
-  const navigate = useNavigate();
   const { isNight, token } = useAuthStore((state) => state)
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
-  const location = useLocation()
-  const pathname = location.pathname
 
   useEffect(() => {
     let isMounted = true;
@@ -46,21 +43,6 @@ export default function Layout() {
     };
   }, [isNight]);
   
-
-  useEffect(() => {
-    if(token){ 
-        const parsed = JSON.parse(token);
-        if (parsed.user_type === 'trader') {
-          navigate(pathname, {replace: true});
-          
-        } else if (parsed.user_type === 'advertiser') {
-          navigate(pathname, {replace: true});
-        }else {
-          console.log("Here App component");
-        }
-    }
-    
-  }, [isLoading, token])
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <HelmetProvider>
