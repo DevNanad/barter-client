@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosPrivate from "../useAxiosPrivate";
 import { toast } from "react-toastify";
 
@@ -105,3 +105,82 @@ export const useProfile = (username:string|undefined) =>{
       },
   }) 
 } 
+
+//QUERY FOR ADDING ITEM
+export const useAddItem = () => {
+  const queryClient = useQueryClient()
+  const axiosPrivate = useAxiosPrivate()  
+  return useMutation({
+      mutationFn: async (newItem: {
+        name: string,
+        price: string,
+        details: string,
+        category: string,
+        condition: string,
+        location: string,
+        user_id: string,
+        image: string[]
+      }) =>{
+          const response = await axiosPrivate.post('/item', newItem)
+          return response.data
+      },
+      onSuccess: async (data) => {
+        await queryClient.invalidateQueries({
+            queryKey: ['elections'],
+            exact: true
+        })
+
+        if(data.message === 'success'){
+          toast.success('Item Added!',{
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          })
+        }
+      },
+      onError: (error:any) => {
+          if (error.message === 'Network Error') {
+            toast.error('Server Unavailable',{
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            })
+          } else if(error.response.data?.message){
+            toast.error(error.response.data.message,{
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            })
+          }else {
+            // Handle other errors
+            error.response.data.errors?.map((err:any) => {
+              toast.error(err.msg,{
+                  position: "top-center",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+              })
+            })
+          } 
+      }
+  })
+}
