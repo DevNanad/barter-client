@@ -1,6 +1,6 @@
-import { useTrader } from '../../hooks/queries/useTrader'
+import { useAddItem, useTrader } from '../../hooks/queries/useTrader'
 import { Link, Outlet } from 'react-router-dom'
-import {LuMenu, LuMessagesSquare, LuShoppingCart} from 'react-icons/lu'
+import {LuMenu, LuPlusSquare, LuShoppingCart} from 'react-icons/lu'
 import { FaHandHoldingHand } from 'react-icons/fa6'
 import {
   Popover,
@@ -18,20 +18,143 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../../../@/components/ui/avatar"
 import { Moon, Sun } from 'lucide-react'
 import { useAuthStore } from '../../hooks/state'
+import { useState } from 'react'
+import Modal from '../../components/Modal'
+import { ZodType, z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { uploadCloudinary } from '../../api/upload'
+import { ToastContainer } from 'react-toastify'
 
+type AddItemFormData = {
+  name: string;
+  price: string;
+  details: string;
+  category: string;
+  condition: string;
+  location: string;
+}
 
 export default function TDash() {
     const {user_id} = useAuthStore((state) => state)
     const traderQuery = useTrader(user_id)
+    const {mutate:addItem} = useAddItem()
     const { setTheme } = useTheme()
+
+    const [isItemAdding, setIsItemAdding] = useState(false)
+    const [isOpenAddItem, setIsOpenAddItem] = useState(false)
+    const [isOpenPricing, setIsOpenPricing] = useState(false)
+    const [images, setImages] = useState([])
+    const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
     const logout = useLogout()
     async function handleLogout(){
       await logout()
     }
 
+    const schema: ZodType<AddItemFormData> = z.object({
+      name: z.string().min(1, {message: "Item name is required"}).max(255),
+      price: z.string().regex(/^\d+$/, { message: "Price must be number" }).min(1, {message: "Price is required"}).max(20),
+      details: z.string().min(1, {message: "Details is required"}).max(1000),
+      category: z.string().min(1, {message: "Category is required"}).max(100),
+      condition: z.string().min(1, {message: "Condition is required"}).max(100),
+      location: z.string().min(1, {message: "Location is required"}).max(500),
+    })
+    const {register, handleSubmit, reset: addItemReset, formState:{errors}} = useForm<AddItemFormData>({resolver: zodResolver(schema)})
+
+    function handleAddItem(){
+      if(traderQuery?.data?.trader.username){
+        if(traderQuery?.data?.trader.coin > 0){
+          //continue to add item
+          setIsOpenAddItem(true);
+        }else{
+          //pop up pricing
+          setIsOpenPricing(true)
+        }
+        
+      }
+      
+    }
+
+    function handleImageChange(e:any){
+      if (e.target.files) {
+        setImages(e.target.files)
+        const files: FileList = e.target.files;
+        const imageArray: string[] = [];
+  
+        for (let i = 0; i < files.length; i++) {
+          const reader = new FileReader();
+  
+          reader.onload = (event) => {
+            const imageData: string = event.target!.result as string;
+            imageArray.push(imageData);
+  
+            if (imageArray.length === files.length) {
+              setSelectedImages([...selectedImages, ...imageArray]);
+            }
+          };
+  
+          reader.readAsDataURL(files[i]);
+        }
+      }
+    };
+
+    async function handleAdd(data: AddItemFormData) {
+
+      try {
+        setIsItemAdding(true)
+        let arr: { public_id: any; url: any; }[] = []
+        for(let i = 0; i < images.length; i++) {
+          const data = await uploadCloudinary(images[i])
+          arr.push(data)
+        }
+
+        const arrayOfImages = arr.map(img => img.url)
+        
+        if(arrayOfImages){
+          //upload item to database
+          addItem({
+            name: data.name,
+            price: data.price,
+            details: data.details,
+            category: data.category,
+            condition: data.condition,
+            location: data.location,
+            user_id,
+            image: arrayOfImages
+          }, {
+            onSettled(data) {
+                setIsItemAdding(false)
+                if(data.message === 'success'){
+                  setIsOpenAddItem(false)
+                  addItemReset()
+                } 
+            }
+          })
+        }
+      } catch (error) {
+        setIsItemAdding(false)
+        console.log(error);
+        
+      }
+      
+    }
     return (
+      <>
+      <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+        />
       <div className="grid h-full grid-cols-12">
+        
           <div className="sidebar flex flex-col justify-start sticky top-0 max-h-screen md:col-span-1 lg:col-span-2 border-r-2 border-violet-300 dark:border-[#27272a] lg:px-4 pb-5">
             <div className="logo py-5 flex justify-center">
               <Link to="/trader">
@@ -43,10 +166,10 @@ export default function TDash() {
                 <LuShoppingCart className="w-8 h-8"/>
                 <h2 className='hidden lg:block text-lg font-semibold'>Market</h2>
               </Link>
-              <Link to="/trader/messages" className="icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-violet-200 dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-3">
-                <LuMessagesSquare className="w-8 h-8"/>
-                <h2 className='hidden lg:block text-lg font-semibold'>Messages</h2>
-              </Link>
+              <button onClick={handleAddItem} className="icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-violet-200 dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-3">
+                <LuPlusSquare className="w-8 h-8"/>
+                <h2 className='hidden lg:block text-lg font-semibold'>Add Item</h2>
+              </button>
               <Link  to={`/trader/${traderQuery?.data?.trader?.username}`} className={`icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-violet-200 dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-2 active:bg-zinc-900 `}>
                 <Avatar className='flex items-center justify-center'>
                   <AvatarImage className="w-8 h-8 rounded-full" src={traderQuery?.data?.trader?.profile} />
@@ -64,7 +187,7 @@ export default function TDash() {
                     <h2 className='hidden lg:block text-lg font-semibold'>More</h2>
                   </div>
                 </PopoverTrigger>
-                <PopoverContent>
+                <PopoverContent className='bg-transparent'>
                   <ul className="px-2 py-3 divide-y divide-violet-500 dark:divide-zinc-700 dark:bg-[#27272a] flex flex-col rounded-md text-white bg-dos border-2 border-violet-400 dark:border-zinc-700 shadow-lg">
                     <div className="py-2 flex mb-3 cursor-pointer shadow-sm items-center justify-around bg-yellow-100 dark:bg-zinc-600 rounded-lg">
                       <h2 className="font-semibold text-dos dark:text-violet-400">Coins:</h2>
@@ -112,7 +235,113 @@ export default function TDash() {
           <div className="main min-h-screen col-span-9 lg:col-span-10">
             <Outlet/>
           </div>
+
+          {/* ADD ITEM MODAL */}
+          <Modal open={isOpenAddItem} onClose={() => setIsOpenAddItem(false)} >
+            <div className="cont p-5 bg-white font-body w-full">
+              <h1 className='font-bold text-center pb-5 font-pop'>ADD ITEM</h1>
+              <form onSubmit={handleSubmit(handleAdd)} className='flex flex-col'>
+                <div className="flex items-center gap-5">
+                  <label>Item Name</label>
+                  <input type="text" className='py-2 px-5 focus:outline-none bg-gray-200 border-2 rounded-md ' {...register("name")} placeholder='Item name' />
+                  {errors.name && (
+                    <span className="text-red-400 text-center text-sm">
+                      {errors.name.message}
+                    </span>
+                  )}
+                  <label>Price</label>
+                  <input type="text" className='py-2 px-5 focus:outline-none bg-gray-200 border-2 rounded-md ' {...register("price")} placeholder='Price' />
+                  {errors.price && (
+                    <span className="text-red-400 text-center text-sm">
+                      {errors.price.message}
+                    </span>
+                  )}
+                </div>
+                <div className="details-conditions flex flex-col">
+                  <label>Details</label>
+                  <textarea className='p-3 resize-none bg-gray-200 focus:outline-none rounded-md' placeholder='More details...' rows={2} {...register("details")}/>
+                  {errors.details && (
+                    <span className="text-red-400 text-center text-sm">
+                      {errors.details.message}
+                    </span>
+                  )}
+                  <div className="cat-con flex gap-5 py-3">
+                    <div className="cat flex-1">
+                      <label>Category</label>
+                      <select {...register("category")} className=" sm:w-full rounded-lg focus:border-indigo-400 outline-none bg-gray-200  py-2 px-4 ">
+                            <option className="bg-transparent rounded dark:bg-[#313131] dark:text-gray-300" value="">Select item Category</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Electronic Devices">Electronic Devices</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Electronic Accessories">Electronic Accessories</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="TV & Home Appliances">TV & Home Appliances</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Health & Beauty">Health & Beauty</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Babies & Toys">Babies & Toys</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Home & Living">Home & Living</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Fasion">Fasion</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Sports & Lifestyle">Sports & Lifestyle</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Automotive & Motorcycles">Automotive & Motorcycles</option>
+                      </select>
+                      {errors.category && (
+                        <span className="text-red-400 text-center text-sm">
+                          {errors.category.message}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="con flex-1">
+                      <label>Condition</label>
+                      <select {...register("condition")} className=" sm:w-full bg-gray-200 rounded-lg focus:outline-none  py-2 px-4 ">
+                            <option className="bg-transparent rounded dark:bg-[#313131] dark:text-gray-300" value="">Select item Condition</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="New">New</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Used">Used</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Refurbished">Refurbished</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="For Parts">For Parts</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Antique/Vintage">Antique/Vintage</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Custom/Handmade">Custom/Handmade</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Certified">Certified</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Open Box">Open Box</option>
+                            <option className="bg-transparent dark:bg-[#313131] dark:text-gray-300" value="Unboxed">Unboxed</option>
+                      </select>
+                      {errors.condition && (
+                        <span className="text-red-400 text-center text-sm">
+                          {errors.condition.message}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="location flex flex-col">
+                  <label>Location / Address</label>
+                  <input {...register("location")} type="text" className='py-2 px-5 focus:outline-none bg-gray-200 border-2 rounded-md ' placeholder='Location' />
+                  {errors.location && (
+                    <span className="text-red-400 text-center text-sm">
+                      {errors.location.message}
+                    </span>
+                  )}
+                </div>
+                <div className="images py-4">
+                  <h2 className=' text-center font-semibold'>Image</h2>
+                  <input type="file" multiple onChange={handleImageChange} accept='image/*' className='block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100' />
+
+                  <div className="images-preview sm:max-w-[40rem] p-4 h-32 overflow-y-auto">
+                  {selectedImages.map((imageData, index) => (
+                    <img key={index} className='h-12 inline rounded-md' src={imageData} alt={`Selected ${index}`} />
+                  ))}
+                  </div>
+                </div>
+
+                {isItemAdding
+                  ? <button disabled className='font-bold py-2 text-white rounded-lg bg-green-500'>Adding</button>
+                  : <button type="submit" className='font-bold py-2 text-white rounded-lg bg-green-500'>Add</button>
+                  
+                }
+
+                
+              </form>
+            </div>
+          </Modal>
+          {/* ADD ITEM MODAL */}
       </div>
+      </>
     )
     
 }
