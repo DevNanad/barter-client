@@ -36,6 +36,10 @@ module.exports = {
         tres: '#B8B8FF',
         quatro: '#FFEEDD',
         singko: '#FFD8BE'
+      },
+      fontFamily: {
+        body: ['Nunito'],
+        pop: ['Poppins']
       }
     },
   },
