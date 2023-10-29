@@ -18,13 +18,16 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../../../@/components/ui/avatar"
 import { Moon, Sun } from 'lucide-react'
 import { useAuthStore } from '../../hooks/state'
-import { useState } from 'react'
+import { ChangeEvent, ReactNode, useState } from 'react'
 import Modal from '../../components/Modal'
 import { ZodType, z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { uploadCloudinary } from '../../api/upload'
 import { ToastContainer } from 'react-toastify'
+import Radio, { RadioGroup } from "../../components/Radio"
+import { Sparkle, Gem, Crown } from "lucide-react"
+import StripeContainer from '../../components/StripeContainer'
 
 type AddItemFormData = {
   name: string;
@@ -46,6 +49,8 @@ export default function TDash() {
     const [isOpenPricing, setIsOpenPricing] = useState(false)
     const [images, setImages] = useState([])
     const [selectedImages, setSelectedImages] = useState<string[]>([]);
+
+    const [plan, setPlan] = useState("")
 
     const logout = useLogout()
     async function handleLogout(){
@@ -189,7 +194,7 @@ export default function TDash() {
                 </PopoverTrigger>
                 <PopoverContent className='bg-transparent'>
                   <ul className="px-2 py-3 divide-y divide-violet-500 dark:divide-zinc-700 dark:bg-[#27272a] flex flex-col rounded-md text-white bg-dos border-2 border-violet-400 dark:border-zinc-700 shadow-lg">
-                    <div className="py-2 flex mb-3 cursor-pointer shadow-sm items-center justify-around bg-yellow-100 dark:bg-zinc-600 rounded-lg">
+                    <div onClick={() => setIsOpenPricing(true)} className="py-2 flex mb-3 cursor-pointer shadow-sm items-center justify-around bg-yellow-100 dark:bg-zinc-600 rounded-lg">
                       <h2 className="font-semibold text-dos dark:text-violet-400">Coins:</h2>
                       <div className="coinnn flex gap-1 items-center justify-center">
                         <p className="fon font-semibold text-md text-gray-900 dark:text-white">{traderQuery?.data?.trader?.coin}</p>
@@ -340,8 +345,69 @@ export default function TDash() {
             </div>
           </Modal>
           {/* ADD ITEM MODAL */}
+          {/* PRICING MODAL */}
+          <Modal open={isOpenPricing} onClose={() => setIsOpenPricing(false)}>
+            <div className="bg-white p-5">
+              <h2 className="text-2xl font-bold text-center tracking-tight">Choose Your Plan</h2>
+              <hr className="my-3" />
+              <RadioGroup value={plan} onChange={(e:ChangeEvent<HTMLInputElement>) => setPlan(e.target.value)}>
+                <div className="flex flex-col md:grid grid-cols-3 gap-4 justify-center">
+                  <Radio value="basic">
+                    <Plan
+                      icon={<Sparkle />}
+                      title="Basic"
+                      features={["5 Coins"]}
+                      price={5}
+                    />
+                  </Radio>
+                  <Radio value="standard">
+                    <Plan
+                      icon={<Gem />}
+                      title="Standard"
+                      features={["21 Coins"]}
+                      price={20}
+                    />
+                  </Radio>
+                  <Radio value="premium">
+                    <Plan
+                      icon={<Crown />}
+                      title="Premium"
+                      features={["105 coins"]}
+                      price={100}
+                    />
+                  </Radio>
+                </div>
+              </RadioGroup>
+              <hr className="my-3" />
+
+              <div className="card pt-5">
+                <StripeContainer plan={plan}/>
+              </div>
+            </div>
+          </Modal>
+          {/* PRICING MODAL */}
       </div>
       </>
     )
     
+}
+
+interface PlanProps {
+  icon: ReactNode;
+  title: string;
+  features: string[];
+  price: number;
+}
+
+function Plan({ icon, title, features, price }: PlanProps) {
+  return (
+    <div className="flex gap-4 items-center">
+      {icon}
+      <div>
+        <h3 className="text-lg font-semibold">{title}</h3>
+        <p className="text-sm">{features.join(" · ")}</p>
+      </div>
+      <span className="ml-auto font-medium">${price}</span>
+    </div>
+  );
 }
