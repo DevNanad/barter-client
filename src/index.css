@@ -6,3 +6,12 @@
 html{
     font-family: 'Nunito';
 }
+
+.StripeElement--webkit-autofill {
+	background: transparent !important;
+}
+
+.StripeElement {
+	width: 100%;
+	padding: 15px 10px;
+}
