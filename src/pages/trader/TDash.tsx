@@ -237,7 +237,7 @@ export default function TDash() {
               </Popover>
             </div>
           </div>
-          <div className="main min-h-screen col-span-9 lg:col-span-10">
+          <div className="main min-h-screen col-span-11 lg:col-span-10">
             <Outlet/>
           </div>
 
