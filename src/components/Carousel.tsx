@@ -5,10 +5,14 @@ export default function Carousel({
   autoSlide = false,
   autoSlideInterval = 3000,
   slides,
+  height,
+  object
 }: {
   autoSlide?: boolean;
   autoSlideInterval?: number;
   slides: string[];
+  height: string;
+  object?: string;
 }) {
   const [curr, setCurr] = useState(0);
 
@@ -29,8 +33,8 @@ export default function Carousel({
         className="flex transition-transform ease-out duration-500"
         style={{ transform: `translateX(-${curr * 100}%)` }}
       >
-        {slides.map((img) => (
-          <img src={img} alt="" className=" h-40 min-w-full object-cover" />
+        {slides?.map((img) => (
+          <img src={img} alt="" className={`min-w-full ${object} ${height}`} />
         ))}
       </div>
       <div className="absolute inset-0 flex items-center justify-between p-4">
@@ -50,7 +54,7 @@ export default function Carousel({
 
       <div className="absolute bottom-4 right-0 left-0">
         <div className="flex items-center justify-center gap-2">
-          {slides.map((_, i) => (
+          {slides?.map((_, i) => (
             <div
               className={`
               transition-all w-2 h-2 bg-white rounded-full
