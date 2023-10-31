@@ -83,7 +83,7 @@ function Reset() {
 
 
   return (
-    <div className='bg-[#BEADFA] h-screen flex items-center'>
+    <div className='bg-[#E7AD99] dark:bg-[#495867] h-screen flex items-center'>
         <ToastContainer
             position="top-center"
             autoClose={3000}

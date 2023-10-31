@@ -158,7 +158,7 @@ export default function TDash() {
             pauseOnHover
             theme="colored"
         />
-      <div className="grid h-full grid-cols-12">
+      <div className="grid h-full bg-[#E7AD99] dark:bg-[#495867] grid-cols-12">
         
           <div className="sidebar flex flex-col justify-start sticky top-0 max-h-screen md:col-span-1 lg:col-span-2 border-r-2 border-violet-300 dark:border-[#27272a] lg:px-4 pb-5">
             <div className="logo py-5 flex justify-center">
@@ -167,15 +167,15 @@ export default function TDash() {
               </Link>
             </div>
             <div className="links text-uno dark:text-[#fafafa] pt-10 grow flex flex-col gap-2">
-              <Link to='/trader' className="icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-violet-200 dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-3">
+              <Link to='/trader' className="icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-[#ECC8AF] dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-3">
                 <LuShoppingCart className="w-8 h-8"/>
                 <h2 className='hidden lg:block text-lg font-semibold'>Market</h2>
               </Link>
-              <button onClick={handleAddItem} className="icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-violet-200 dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-3">
+              <button onClick={handleAddItem} className="icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-[#ECC8AF] dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-3">
                 <LuPlusSquare className="w-8 h-8"/>
                 <h2 className='hidden lg:block text-lg font-semibold'>Add Item</h2>
               </button>
-              <Link  to={`/trader/${traderQuery?.data?.trader?.username}`} className={`icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-violet-200 dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-2 active:bg-zinc-900 `}>
+              <Link  to={`/trader/${traderQuery?.data?.trader?.username}`} className={`icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-[#ECC8AF] dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-2 active:bg-zinc-900 `}>
                 <Avatar className='flex items-center justify-center'>
                   <AvatarImage className="w-8 h-8 rounded-full" src={traderQuery?.data?.trader?.profile} />
                   <AvatarFallback className="bg-dos w-8 h-8 text-white uppercase">{traderQuery?.data?.trader?.fullname.slice(0,2)}</AvatarFallback>

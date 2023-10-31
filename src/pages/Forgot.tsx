@@ -65,7 +65,7 @@ function Forgot() {
 
 
   return (
-    <div className='bg-[#BEADFA] h-full'>
+    <div className='bg-[#E7AD99] dark:bg-[#495867] h-full'>
         <ToastContainer
             position="top-center"
             autoClose={5000}
