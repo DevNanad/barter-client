@@ -3,12 +3,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import airDeliver from "../assets/air-delivery.png"
 import {ToastContainer, toast} from "react-toastify"
 import { Navbar } from '../components/Navbar';
 import {Helmet} from "react-helmet-async"
 import { login } from '../api/auth';
 import { useAuthStore } from '../hooks/state';
+import shoppingcart from '../assets/shoppingcart.json'
+import Lottie from 'lottie-react';
 
 type LoginFormData = {
     usernameORemail: string;
@@ -78,7 +79,7 @@ function Login() {
       };
 
   return (
-    <div className='bg-[#BEADFA] h-full'>
+    <div className='bg-[#E7AD99] dark:bg-[#495867] h-full'>
         <ToastContainer
             position="top-center"
             autoClose={5000}
@@ -100,9 +101,9 @@ function Login() {
             <Link to="/signup" className='p-2'>Signup</Link>
         </Navbar>
         
-        <div className="login-container pt-6 gap-5 md:pt-32 h-full w-full grid md:grid-cols-2">
+        <div className="login-container pt-6 gap-5 md:pt-20 h-full w-full grid md:grid-cols-2">
             <div className="signup-cloud flex justify-center items-center">
-                <img className='h-32 sm:h-48 md:h-96' src={airDeliver} alt="global shopping image" />
+                <Lottie animationData={shoppingcart} className="h-40  md:h-[30rem] drop-shadow-2xl" loop={true} />
             </div>
             <div className="signup-form w-full flex justify-center">
                 <form onSubmit={handleSubmit(handleLogin)} className='w-10/12 lg:w-7/12 p-5 bg-uno rounded-xl flex flex-col shadow-2xl'>
