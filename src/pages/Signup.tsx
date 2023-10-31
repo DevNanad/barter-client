@@ -3,11 +3,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import shoppingImg from "../assets/global-shopping.png"
 import { signupSend } from '../api/auth';
 import {ToastContainer, toast} from "react-toastify"
 import { Navbar } from '../components/Navbar';
 import {Helmet} from "react-helmet-async"
+import womanshopping from '../assets/womanshopping.json'
+import Lottie from 'lottie-react';
 
 type SignupFormData = {
     fullname: string;
@@ -78,7 +79,7 @@ function Signup() {
       };
 
   return (
-    <div className='bg-[#BEADFA] h-full'>
+    <div className='bg-[#E7AD99] dark:bg-[#495867] h-full'>
         <ToastContainer
             position="top-center"
             autoClose={5000}
@@ -102,7 +103,7 @@ function Signup() {
         
         <div className="signup-container pt-6 gap-5 lg:pt-10 h-full w-full grid md:grid-cols-2">
             <div className="signup-cloud flex justify-center items-center">
-                <img className='h-32 sm:h-48 md:h-60' src={shoppingImg} alt="global shopping image" />
+                <Lottie animationData={womanshopping} className="h-32 sm:h-48 md:h-[30rem] drop-shadow-2xl" loop={true} />
             </div>
             <div className="signup-form w-full flex justify-center">
                 <form onSubmit={handleSubmit(handleSignup)} className='w-10/12 lg:w-7/12 p-5 bg-uno rounded-xl flex flex-col shadow-2xl'>
