@@ -184,3 +184,72 @@ export const useAddItem = () => {
       }
   })
 }
+
+//QUERY FOR CLAIMING COUPON 
+export const useClaimCoupon = () => {
+  const axiosPrivate = useAxiosPrivate()
+  const queryClient = useQueryClient()
+  return useMutation({
+      mutationFn: async (couponInfo: {coupon_code: string, user_id: string}) =>{
+          const response = await axiosPrivate.post('/user/claim-coupon', couponInfo)
+          return response.data
+      },
+      onSuccess: async (data) => {
+          if(data.message === 'success'){
+            await queryClient.invalidateQueries({
+              queryKey: ['trader'],
+              exact: true
+            })
+            toast.success('Coupon Claimed!',{
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            })
+          }
+      },
+      onError: (error:any) => {
+          if (error.message === 'Network Error') {
+            toast.error('Server Unavailable',{
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            })
+          } else if(error.response.data?.error){
+            toast.error(error.response.data?.error,{
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            })
+          }else {
+            // Handle other errors
+            error.response.data.errors?.map((err:any) => {
+              toast.error(err.msg,{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            })
+          } 
+    }
+  })
+}
