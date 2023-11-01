@@ -253,3 +253,63 @@ export const useClaimCoupon = () => {
     }
   })
 }
+
+//QUERY FOR UPDATING TRADER PROFILE PICTURE
+export const useUpdateProfile = () => {
+  const queryClient = useQueryClient()
+  const axiosPrivate = useAxiosPrivate()
+  return useMutation({
+      mutationFn:async (newData: {user_id:string, profile: string,}) => {
+          const response = await axiosPrivate.patch(`/user/profile`, {
+            user_id: newData.user_id,
+            profile: newData.profile,
+          } )
+          return response.data
+      },
+      onSuccess: async () => {
+          await queryClient.invalidateQueries({
+              queryKey: ['trader'],
+              exact: true
+          })
+      },
+      onError: (error:any) => {
+          if (error.message === 'Network Error') {
+              toast.error('Server Unavailable',{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            } else if(error.response.data?.error){
+              toast.error(error.response.data?.error,{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            }else {
+              // Handle other errors
+              error.response.data.errors?.map((err:any) => {
+                toast.error(err.msg,{
+                  position: "top-center",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                })
+              })
+            }
+      }
+  })
+}
