@@ -17,6 +17,7 @@ import Messages from "./pages/trader/Messages";
 import Settings from "./pages/trader/Settings";
 import Profile from "./pages/trader/Profile";
 import Market from "./pages/trader/Market";
+import Editprofile from "./pages/trader/Editprofile";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -76,6 +77,12 @@ const router = createBrowserRouter([
           {
             path: '/trader/settings',
             element: <Settings/>,
+            children: [
+              {
+                path: '',
+                element: <Editprofile/>
+              },
+            ]
           },
           {
             path: '/trader/:username',
