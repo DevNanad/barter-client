@@ -97,8 +97,8 @@ export default function Market() {
                     <div className="seller">
                       <h5 className="condition opacity-90 py-3">Trader information</h5>
 
-                      <Avatar className='flex items-center gap-3'>
-                        <AvatarImage className="w-8 h-8 rounded-full" src={gettedItemData?.user.profile} />
+                      <Avatar className='flex items-center w-full h-full gap-3'>
+                        <AvatarImage className="w-8 h-8 object-cover rounded-full" src={gettedItemData?.user.profile} />
                         <AvatarFallback className="bg-dos w-8 h-8 text-white uppercase">{gettedItemData?.user.fullname.slice(0,2)}</AvatarFallback>
                         <h3 className="capitalize">{gettedItemData?.user.fullname}</h3>
                       </Avatar>

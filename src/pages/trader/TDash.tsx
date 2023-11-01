@@ -1,5 +1,5 @@
 import { useAddItem, useClaimCoupon, useTrader } from '../../hooks/queries/useTrader'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import {LuMenu, LuPlusSquare, LuShoppingCart} from 'react-icons/lu'
 import { FaHandHoldingHand } from 'react-icons/fa6'
 import {
@@ -191,21 +191,21 @@ export default function TDash() {
               </Link>
             </div>
             <div className="links text-uno dark:text-[#fafafa] pt-10 grow flex flex-col gap-2">
-              <Link to='/trader' className="icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-[#ECC8AF] dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-3">
+              <NavLink to='/trader' className="icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-[#ECC8AF] dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-3" end>
                 <LuShoppingCart className="w-8 h-8"/>
                 <h2 className='hidden lg:block text-lg font-semibold'>Market</h2>
-              </Link>
+              </NavLink>
               <button onClick={handleAddItem} className="icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-[#ECC8AF] dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-3">
                 <LuPlusSquare className="w-8 h-8"/>
                 <h2 className='hidden lg:block text-lg font-semibold'>Add Item</h2>
               </button>
-              <Link  to={`/trader/${traderQuery?.data?.trader?.username}`} className={`icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-[#ECC8AF] dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-2 active:bg-zinc-900 `}>
+              <NavLink  to={`/trader/${traderQuery?.data?.trader?.username}`} className={`icons-link cursor-pointer hover:text-dos ease-in-out hover:bg-[#ECC8AF] dark:hover:bg-zinc-900 px-3 py-2 rounded-md flex items-center justify-center lg:justify-start lg:gap-2`}>
                 <Avatar className='flex items-center justify-center'>
-                  <AvatarImage className="w-8 h-8 rounded-full" src={traderQuery?.data?.trader?.profile} />
+                  <AvatarImage className="w-8 h-8 object-cover rounded-full" src={traderQuery?.data?.trader?.profile} />
                   <AvatarFallback className="bg-dos w-8 h-8 text-white uppercase">{traderQuery?.data?.trader?.fullname.slice(0,2)}</AvatarFallback>
                 </Avatar>
                 <h2 className='hidden lg:block text-lg font-semibold'>Profile</h2>
-              </Link>
+              </NavLink>
             </div>
 
             <div className="menu justify-self-end w-full py-5 text-uno dark:text-[#fafafa]">
@@ -216,7 +216,7 @@ export default function TDash() {
                     <h2 className='hidden lg:block text-lg font-semibold'>More</h2>
                   </div>
                 </PopoverTrigger>
-                <PopoverContent className='bg-transparent'>
+                <PopoverContent className='bg-transparent border-0 shadow-none'>
                   <ul className="px-2 py-3 divide-y divide-violet-500 dark:divide-zinc-700 dark:bg-[#27272a] flex flex-col rounded-md text-white bg-dos border-2 border-violet-400 dark:border-zinc-700 shadow-lg">
                     <div onClick={() => setIsOpenPricing(true)} className="py-2 flex mb-3 cursor-pointer shadow-sm items-center justify-around bg-yellow-100 dark:bg-zinc-600 rounded-lg">
                       <h2 className="font-semibold text-dos dark:text-violet-400">Coins:</h2>
