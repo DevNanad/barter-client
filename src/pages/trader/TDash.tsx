@@ -1,4 +1,4 @@
-import { useAddItem, useTrader } from '../../hooks/queries/useTrader'
+import { useAddItem, useClaimCoupon, useTrader } from '../../hooks/queries/useTrader'
 import { Link, Outlet } from 'react-router-dom'
 import {LuMenu, LuPlusSquare, LuShoppingCart} from 'react-icons/lu'
 import { FaHandHoldingHand } from 'react-icons/fa6'
@@ -37,6 +37,9 @@ type AddItemFormData = {
   condition: string;
   location: string;
 }
+type ClaimCouponFormData = {
+  coupon: string;
+}
 
 export default function TDash() {
     const {user_id} = useAuthStore((state) => state)
@@ -47,6 +50,7 @@ export default function TDash() {
     const [isItemAdding, setIsItemAdding] = useState(false)
     const [isOpenAddItem, setIsOpenAddItem] = useState(false)
     const [isOpenPricing, setIsOpenPricing] = useState(false)
+    const [isOpenCoupon, setIsOpenCoupon] = useState(false)
     const [images, setImages] = useState([])
     const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
@@ -66,6 +70,11 @@ export default function TDash() {
       location: z.string().min(1, {message: "Location is required"}).max(500),
     })
     const {register, handleSubmit, reset: addItemReset, formState:{errors}} = useForm<AddItemFormData>({resolver: zodResolver(schema)})
+    
+    const couponSchema: ZodType<ClaimCouponFormData> = z.object({
+      coupon: z.string().min(1, {message: "Coupon code required"}).max(255),
+    })
+    const {register:couponRegister, handleSubmit: handleCouponSubmit, formState:{errors:couponErrors}} = useForm<ClaimCouponFormData>({resolver: zodResolver(couponSchema)})
 
     function handleAddItem(){
       if(traderQuery?.data?.trader.username){
@@ -144,6 +153,21 @@ export default function TDash() {
       }
       
     }
+    function handleCoupon(){
+      console.log("click");
+      setIsOpenCoupon(true)
+      
+    }
+
+    const {mutate: claimCoupon, isLoading: isClaiming} = useClaimCoupon()
+
+    function handlClaimCoupon(data: ClaimCouponFormData){
+      claimCoupon({
+        coupon_code: data.coupon,
+        user_id: user_id
+        }
+      )
+    }
     return (
       <>
       <ToastContainer
@@ -202,7 +226,7 @@ export default function TDash() {
                       </div>
                     </div>
                     
-                    <button className="font-semibold py-2 px-10 hover:bg-violet-600 dark:hover:bg-zinc-600 hover:opacity-40 dark:hover:opacity-100 rounded-md">Coupon</button>
+                    <button onClick={() => handleCoupon()} className="font-semibold py-2 px-10 hover:bg-violet-600 dark:hover:bg-zinc-600 hover:opacity-40 dark:hover:opacity-100 rounded-md">Coupon</button>
                     
                     <Link to="/trader/settings" className="font-semibold py-2 px-10 hover:bg-violet-600 text-center dark:hover:bg-zinc-600 hover:opacity-40 dark:hover:opacity-100 rounded-md">Settings</Link>
 
@@ -386,6 +410,25 @@ export default function TDash() {
             </div>
           </Modal>
           {/* PRICING MODAL */}
+          {/* COUPON MODAL */}
+          <Modal open={isOpenCoupon} onClose={() => setIsOpenCoupon(false)}>
+            <div className="coupon p-5 gap-5 bg-white ">
+              <form onSubmit={handleCouponSubmit(handlClaimCoupon)} className='flex flex-col gap-5'>  
+                <h3 className='font-bold text-center'>Enter a Coupon to redeem</h3>
+                <input {...couponRegister("coupon")} type="text" className='py-3 p-5 bg-gray-200 rounded-lg' />
+                {couponErrors.coupon && (
+                    <span className="text-red-400 text-center text-sm">
+                      {couponErrors.coupon.message}
+                    </span>
+                  )}
+                {isClaiming
+                  ? <button disabled className='py-2 text-center bg-blue-500 text-white uppercase  font-extrabold rounded-lg'>Redeeming...</button>
+                  : <button type='submit' className='py-2 text-center bg-blue-500 text-white uppercase  font-extrabold rounded-lg'>Redeem</button>
+                }
+              </form>
+            </div>
+          </Modal>
+          {/* COUPON MODAL */}
       </div>
       </>
     )
