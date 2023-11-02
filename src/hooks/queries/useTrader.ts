@@ -458,3 +458,75 @@ export const useUpdateUsername = () => {
       }
   })
 }
+
+//QUERY FOR UPDATING TRADER MOBILE
+export const useUpdateMobile = () => {
+  const queryClient = useQueryClient()
+  const axiosPrivate = useAxiosPrivate()
+  return useMutation({
+      mutationFn:async (newData: {user_id:string, mobile_number: string}) => {
+          const response = await axiosPrivate.patch(`/user/update-mobile`, {
+            user_id: newData.user_id,
+            mobile_number: newData.mobile_number,
+          } )
+          return response.data
+      },
+      onSuccess: async (data) => {
+          if(data.message === 'success'){
+            await queryClient.invalidateQueries({
+              queryKey: ['trader'],
+              exact: true
+            })
+            toast.success('Mobile number Updated!',{
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            })
+          }
+      },
+      onError: (error:any) => {
+          if (error.message === 'Network Error') {
+              toast.error('Server Unavailable',{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            } else if(error.response.data?.error){
+              toast.error(error.response.data?.error,{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            }else {
+              // Handle other errors
+              error.response.data.errors?.map((err:any) => {
+                toast.error(err.msg,{
+                  position: "top-center",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                })
+              })
+            }
+      }
+  })
+}
