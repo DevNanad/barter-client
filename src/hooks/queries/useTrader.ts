@@ -313,6 +313,7 @@ export const useUpdateProfile = () => {
       }
   })
 }
+
 //QUERY FOR UPDATING TRADER PROFILE INFO
 export const useUpdateProfileInfo = () => {
   const queryClient = useQueryClient()
@@ -333,6 +334,78 @@ export const useUpdateProfileInfo = () => {
               exact: true
             })
             toast.success('Updated!',{
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            })
+          }
+      },
+      onError: (error:any) => {
+          if (error.message === 'Network Error') {
+              toast.error('Server Unavailable',{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            } else if(error.response.data?.error){
+              toast.error(error.response.data?.error,{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            }else {
+              // Handle other errors
+              error.response.data.errors?.map((err:any) => {
+                toast.error(err.msg,{
+                  position: "top-center",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                })
+              })
+            }
+      }
+  })
+}
+
+//QUERY FOR UPDATING TRADER USERNAME
+export const useUpdateUsername = () => {
+  const queryClient = useQueryClient()
+  const axiosPrivate = useAxiosPrivate()
+  return useMutation({
+      mutationFn:async (newData: {user_id:string, username: string}) => {
+          const response = await axiosPrivate.patch(`/user/update-username`, {
+            user_id: newData.user_id,
+            username: newData.username,
+          } )
+          return response.data
+      },
+      onSuccess: async (data) => {
+          if(data.message === 'success'){
+            await queryClient.invalidateQueries({
+              queryKey: ['trader'],
+              exact: true
+            })
+            toast.success('Username Updated!',{
               position: "top-center",
               autoClose: 5000,
               hideProgressBar: false,
