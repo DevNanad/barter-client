@@ -52,7 +52,7 @@ function Signup() {
             setIsLoading(false)
             if(responseData.message === "success"){
                 //save to localstorage
-                localStorage.setItem("username", data.username)
+                localStorage.setItem("username", data.username.split(" ").join(""))
                 localStorage.setItem("email", data.email)
                 localStorage.setItem("fullname", data.fullname)
                 localStorage.setItem("password", data.password)
