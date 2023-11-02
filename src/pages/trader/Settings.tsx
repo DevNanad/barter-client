@@ -10,8 +10,11 @@ export default function Settings() {
         <div className="h2 pt-8 pl-4 font-extrabold text-xl">Settings</div>
 
         <div className="tabs grid gap-2 py-2">
-          <NavLink to='/trader/settings' className=" py-3 px-4 font-bold hover:bg-[#ECC8AF] dark:hover:bg-gray-700 rounded-lg" >
-            Edit Profile
+          <NavLink to='/trader/settings' className=" py-3 px-4 font-bold hover:bg-[#ECC8AF] dark:hover:bg-gray-700 rounded-lg" end >
+            Edit profile
+          </NavLink>
+          <NavLink to='/trader/settings/contact' className=" py-3 px-4 font-bold hover:bg-[#ECC8AF] dark:hover:bg-gray-700 rounded-lg" >
+            Contact information
           </NavLink>
         </div>
       </div>

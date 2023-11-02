@@ -18,6 +18,7 @@ import Settings from "./pages/trader/Settings";
 import Profile from "./pages/trader/Profile";
 import Market from "./pages/trader/Market";
 import Editprofile from "./pages/trader/Editprofile";
+import Editcontact from "./pages/trader/Editcontact";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
               {
                 path: '',
                 element: <Editprofile/>
+              },
+              {
+                path: '/trader/settings/contact',
+                element: <Editcontact/>
               },
             ]
           },

@@ -62,7 +62,7 @@ export default function Profile() {
           </TabsTrigger>
           <TabsTrigger className="font-bold flex rounded-none text-gray-300 items-center justify-center gap-2 py-3 tracking-wider data-[state=active]:text-white data-[state=active]:border-white data-[state=active]:border-t-[1px]" value="contact">
             <HiMail className="w-5 h-5" />
-            <h3 className="">Contact</h3>
+            <h3 className="">CONTACT</h3>
           </TabsTrigger>
         </TabsList>
         <TabsContent value="items" className={`grid grid-cols-3 relative lg:grid-cols-5 gap-5 ${isItemSliderOpen ? '' : 'overflow-hidden'}`}>
