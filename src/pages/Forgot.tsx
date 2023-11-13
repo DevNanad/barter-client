@@ -65,7 +65,7 @@ function Forgot() {
 
 
   return (
-    <div className='bg-[#E7AD99] dark:bg-[#495867] h-full'>
+    <div className='bg-[#e9ebf8] dark:bg-[#1a1a1d] h-full'>
         <ToastContainer
             position="top-center"
             autoClose={5000}
@@ -87,13 +87,13 @@ function Forgot() {
         </Navbar>
 
         <div className="forgot-container h-full w-full flex mt-20 justify-center">
-            <form onSubmit={handleSubmit(handleForgot)} className='w-10/12 sm:w-6/12 md:w-5/12 lg:w-4/12 px-5 py-3 bg-uno shadow-2xl rounded-3xl flex flex-col mt-5 mb-10'>
+            <form onSubmit={handleSubmit(handleForgot)} className='w-10/12 sm:w-6/12 md:w-5/12 lg:w-4/12 px-5 py-3 bg-uno dark:bg-[#212225] shadow-2xl rounded-3xl flex flex-col mt-5 mb-10'>
                 <h2 className='text-center pt-10 pb-2 font-extrabold tracking-wider text-2xl text-dos'>Forgot Password?</h2>
                 <div className="fullname w-full font-medium">
                     <p className="text-gray-400 p-3 break-words text-center text-sm">Enter your email address you're using for your account below and we will send you a password reset link.</p>
                         <label className="text-dos text-xs">Email address</label>
                         <input
-                        className="py-2 px-5 bg-violet-100 rounded-lg text-gray-900 text-md font-medium outline-none border-solid border-[1px] border-violet-300 w-full tracking-widest"
+                        className="py-2 px-5 bg-violet-100 rounded-lg text-gray-900 text-md font-medium outline-none dark:bg-transparent dark:text-gray-200 border-solid border-[1px] border-violet-300 w-full tracking-widest"
                         type="text"
                         {...register("email")}
                         placeholder='Email address'

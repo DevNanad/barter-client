@@ -83,7 +83,7 @@ function Reset() {
 
 
   return (
-    <div className='bg-[#E7AD99] dark:bg-[#495867] h-screen flex items-center'>
+    <div className='bg-[#e9ebf8] dark:bg-[#1a1a1d] h-screen flex items-center'>
         <ToastContainer
             position="top-center"
             autoClose={3000}
@@ -101,7 +101,7 @@ function Reset() {
         </Helmet>
 
         <div className="reset-container h-full w-full flex justify-center items-center">
-            <form onSubmit={handleSubmit(handleReset)} className='w-10/12 sm:w-6/12 md:w-5/12 lg:w-4/12 px-5 py-3 bg-uno shadow-2xl rounded-3xl flex flex-col mt-5 mb-10'>
+            <form onSubmit={handleSubmit(handleReset)} className='w-10/12 sm:w-6/12 md:w-5/12 lg:w-4/12 px-5 py-3 bg-uno dark:bg-[#212225] shadow-2xl rounded-3xl flex flex-col mt-5 mb-10'>
                 <h2 className='text-center pt-10 font-extrabold tracking-wider text-2xl text-dos'>Change your Password</h2>
                 <div className="fullname w-full font-medium">
                     <p className="text-gray-400 pb-3 break-words text-center text-sm">Enter a new password below to change your password</p>
@@ -109,7 +109,7 @@ function Reset() {
                         <label className="text-dos text-xs">New Password</label>
                         <br />
                             <input
-                            className="px-4 py-2 bg-uno rounded-lg text-gray-900 text-md outline-none border-solid border-[1px] border-gray-400 w-full tracking-wider"
+                            className="px-4 py-2 bg-uno dark:bg-transparent dark:text-gray-200 rounded-lg text-gray-900 text-md outline-none border-solid border-[1px] border-gray-400 w-full tracking-wider"
                             type={showPassword ? "text" : "password"}
                             {...register("password")}
                             placeholder="New Password"
@@ -122,7 +122,7 @@ function Reset() {
                         <label className="text-dos text-xs">Confirm New Password</label>
                         <br />
                             <input
-                            className="px-4 py-2 bg-uno rounded-lg text-gray-900 text-md outline-none border-solid border-[1px] border-gray-400 w-full tracking-wider"
+                            className="px-4 py-2 bg-uno dark:bg-transparent dark:text-gray-200 rounded-lg text-gray-900 text-md outline-none border-solid border-[1px] border-gray-400 w-full tracking-wider"
                             type={showPassword ? "text" : "password"}
                             {...register("confirmPassword")}
                             placeholder="Confirm New Password"
