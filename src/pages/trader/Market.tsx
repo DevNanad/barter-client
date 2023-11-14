@@ -7,6 +7,7 @@ import {IoLocationSharp} from 'react-icons/io5'
 import { FaAngleLeft } from "react-icons/fa6";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../@/components/ui/avatar";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 export default function Market() {
   const [categoryQuery, setCategoryQuery] = useState<string | null>(null)
@@ -52,6 +53,9 @@ export default function Market() {
         pauseOnHover
         theme="colored"
       />
+      <Helmet>
+          <title>BandB | Market</title>
+      </Helmet>
       <h2 className="text-black dark:text-gray-100 py-10 text-center text-xl uppercase tracking-widest font-extrabold">Market</h2>
       <div className="body px-5 max-h-40 w-full grid grid-cols-12 grid-flow-row">
         <div className="category-nav bg-white dark:bg-[#212225] col-span-3 lg:col-span-2 flex flex-col items-start text-[#00171f] dark:text-gray-200 gap-1 rounded-lg">

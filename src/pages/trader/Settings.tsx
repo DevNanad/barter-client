@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { NavLink, Outlet } from "react-router-dom";
 
 export default function Settings() {
@@ -5,6 +6,9 @@ export default function Settings() {
 
   return (
     <div className="text-white flex">
+      <Helmet>
+          <title>BandB | Settings</title>
+      </Helmet>
       <div className="side-settings h-screen w-2/6 lg:w-3/12 p-5 border-r-[0.9rem] border-violet-300 dark:border-[#27272a]">
         <div className="ad opacity-70 flex justify-center items-center bg-gray-400 py-20 rounded-lg">ad</div>
         <div className="h2 pt-8 pl-4 font-extrabold text-xl">Settings</div>
