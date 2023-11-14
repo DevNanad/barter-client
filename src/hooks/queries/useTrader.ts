@@ -530,3 +530,148 @@ export const useUpdateMobile = () => {
       }
   })
 }
+
+//QUERY FOR UPDATING TRADER EMAIL (SEND OTP)
+export const useUpdateEmailSEND = () => {
+  const queryClient = useQueryClient()
+  const axiosPrivate = useAxiosPrivate()
+  return useMutation({
+      mutationFn:async (newData: {user_id:string, new_email: string}) => {
+          const response = await axiosPrivate.post(`/user/update-email-send`, {
+            user_id: newData.user_id,
+            new_email: newData.new_email,
+          } )
+          return response.data
+      },
+      onSuccess: async (data) => {
+          if(data.message === 'success'){
+            await queryClient.invalidateQueries({
+              queryKey: ['trader'],
+              exact: true
+            })
+            toast.success('OTP has been sent',{
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            })
+          }
+      },
+      onError: (error:any) => {
+          if (error.message === 'Network Error') {
+              toast.error('Server Unavailable',{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            } else if(error.response.data?.error){
+              toast.error(error.response.data?.error,{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            }else {
+              // Handle other errors
+              error.response.data.errors?.map((err:any) => {
+                toast.error(err.msg,{
+                  position: "top-center",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                })
+              })
+            }
+      }
+  })
+}
+
+//QUERY FOR UPDATING TRADER EMAIL (CONFIRM OTP)
+export const useUpdateEmailCONFIRM = () => {
+  const queryClient = useQueryClient()
+  const axiosPrivate = useAxiosPrivate()
+  return useMutation({
+      mutationFn:async (newData: {user_id:string, new_email: string, code: string}) => {
+          const response = await axiosPrivate.patch(`/user/update-email-confirm`, {
+            user_id: newData.user_id,
+            new_email: newData.new_email,
+            code: newData.code,
+          } )
+          return response.data
+      },
+      onSuccess: async (data) => {
+          if(data.message === 'success'){
+            await queryClient.invalidateQueries({
+              queryKey: ['trader'],
+              exact: true
+            })
+            toast.success('Email Address Updated!',{
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            })
+          }
+      },
+      onError: (error:any) => {
+          if (error.message === 'Network Error') {
+              toast.error('Server Unavailable',{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            } else if(error.response.data?.error){
+              toast.error(error.response.data?.error,{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            }else {
+              // Handle other errors
+              error.response.data.errors?.map((err:any) => {
+                toast.error(err.msg,{
+                  position: "top-center",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                })
+              })
+            }
+      }
+  })
+}
