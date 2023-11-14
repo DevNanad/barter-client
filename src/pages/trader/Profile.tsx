@@ -9,6 +9,7 @@ import { useAuthStore } from "../../hooks/state"
 import Carousel from "../../components/Carousel"
 import { IoLocationSharp } from "react-icons/io5"
 import { HiMail } from "react-icons/hi"
+import { Helmet } from "react-helmet-async"
 
 
 export default function Profile() {
@@ -37,6 +38,9 @@ export default function Profile() {
 
   return (
     <div className="text-gray-900 dark:text-white px-5 min-h-screen overflow-y-auto">
+      <Helmet>
+        <title>BandB | Profile</title>
+      </Helmet>
       <div className="about grid grid-cols-9 gap-10 pt-10 mx-5 mb-10">
         <Avatar className='flex w-full h-full items-center justify-end col-span-2'>
           <AvatarImage className="w-40 h-40 object-cover rounded-full" src={traderQuery?.data?.trader?.profile} />
@@ -115,6 +119,14 @@ export default function Profile() {
         <TabsContent value="contact">
           <div className="contacme">
             <h1 className="text-xl font-semibold ml-10">Contact Information</h1>
+            <div className="info ml-20 mt-10 flex gap-2 font-semibold">
+              <h3 className="opacity-70">Mobile Number:</h3>
+              <h4>{traderQuery?.data?.trader?.mobile_number ?? "09123456789"}</h4>
+            </div>
+            <div className="info ml-20 mt-5 flex gap-2 font-semibold">
+              <h3 className="opacity-70">Email Address:</h3>
+              <h4>{traderQuery?.data?.trader?.email ?? "trader@email.com"}</h4>
+            </div>
           </div>
         </TabsContent>
       </Tabs>
