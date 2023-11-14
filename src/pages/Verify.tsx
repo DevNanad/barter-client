@@ -192,7 +192,7 @@ function Verify() {
     }
 
   return (
-    <div className='bg-[#E7AD99] dark:bg-[#495867] h-full'>
+    <div className='bg-[#e9ebf8] dark:bg-[#1a1a1d] h-full'>
         <ToastContainer
             position="top-center"
             autoClose={5000}
@@ -213,7 +213,7 @@ function Verify() {
         </Navbar>
 
         <div className="verify-container h-full w-full flex justify-center">
-            <form onSubmit={handleSubmit(handleVerify)} className='w-10/12 sm:w-6/12 md:w-5/12 lg:w-4/12 px-5 py-3 bg-uno shadow-2xl rounded-3xl flex flex-col mt-5 mb-10'>
+            <form onSubmit={handleSubmit(handleVerify)} className='w-10/12 sm:w-6/12 md:w-5/12 lg:w-4/12 px-5 py-3 bg-uno dark:bg-[#212225] shadow-2xl rounded-3xl flex flex-col mt-5 mb-10'>
                 <div className="img flex justify-center items-center py-5">
                   <img className='w-60' src={mail} alt="email 3d image" />
                 </div>
@@ -221,14 +221,14 @@ function Verify() {
                 <div className="fullname w-full font-medium">
                     <p className="text-gray-400 p-3 break-words text-center text-sm">Please enter the 6 digit code sent to {localEmail ? localEmail : "yourmail@example.com"}</p>
                         <input
-                        className="py-2 text-center bg-violet-100 rounded-lg text-gray-900 text-2xl font-extrabold outline-none border-solid border-[1px] border-violet-300 w-full tracking-widest"
+                        className="py-2 text-center bg-violet-100 dark:bg-transparent  rounded-lg text-gray-900 dark:text-gray-100 text-2xl font-extrabold outline-none border-solid border-[1px] border-gray-400  dark:border-zinc-70  w-full tracking-widest"
                         type="text"
                         {...register("code")}
                         minLength={6}
                         maxLength={6}
                         required
                     />
-                    {errors.code && <span className="text-red-400 text-center text-sm">{errors.code.message}</span>}
+                    {errors.code && <div className="text-red-400 py-1 text-center text-sm">{errors.code.message}</div>}
                 </div>
                 {isResendLoading
                     ? <div className='py-3 mt-2 rounded-md font-medium text-sm text-violet-500' >Resending...</div>
