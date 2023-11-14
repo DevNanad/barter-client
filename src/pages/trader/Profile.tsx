@@ -37,25 +37,25 @@ export default function Profile() {
   }
 
   return (
-    <div className="text-gray-900 dark:text-white px-5 min-h-screen overflow-y-auto">
+    <div className="text-gray-900 pb-20 md:pb-0 dark:text-white px-5 min-h-screen overflow-y-auto">
       <Helmet>
         <title>BandB | Profile</title>
       </Helmet>
-      <div className="about grid grid-cols-9 gap-10 pt-10 mx-5 mb-10">
-        <Avatar className='flex w-full h-full items-center justify-end col-span-2'>
-          <AvatarImage className="w-40 h-40 object-cover rounded-full" src={traderQuery?.data?.trader?.profile} />
-          <AvatarFallback className="bg-dos w-40 h-40 text-4xl text-white uppercase">{traderQuery?.data?.trader?.fullname.slice(0,2)}</AvatarFallback>
+      <div className="about md:grid md:grid-cols-9 gap-10 pt-10 mx-5 mb-10">
+        <Avatar className='flex w-full h-full items-center justify-center md:justify-end col-span-2'>
+          <AvatarImage className="w-28 md:w-40 h-28 md:h-40 object-cover rounded-full" src={traderQuery?.data?.trader?.profile} />
+          <AvatarFallback className="bg-dos w-28 md:w-40 h-28 md:h-40 text-4xl text-white uppercase">{traderQuery?.data?.trader?.fullname.slice(0,2)}</AvatarFallback>
         </Avatar>
         <div className="info flex flex-col col-span-5 gap-3 ">
-          <div className="flex gap-2 items-center">
-            <h1 className="text-xl font-light mr-5">{traderQuery?.data?.trader?.username}</h1>
+          <div className="flex gap-2 justify-center py-3 md:py-0 md:items-center">
+            <h1 className="text-base md:text-xl font-light mr-5">{traderQuery?.data?.trader?.username}</h1>
             {traderQuery?.data?.trader?.id === user_id
-              ? <Link to='/trader/settings' className="btn bg-gray-300 dark:bg-gray-700 text-sm font-semibold py-2 px-3 rounded-lg cursor-pointer">Edit profile</Link>
+              ? <Link to='/trader/settings' className="btn bg-gray-300 dark:bg-gray-700 text-xs md:text-sm font-semibold py-2 px-3 rounded-lg cursor-pointer">Edit profile</Link>
               : ''
             }
           </div>
-          <h1 className="font-semibold capitalize">{traderQuery?.data?.trader?.fullname}</h1>
-          <p className=" font-medium capitalize text-sm text-center pt-10">{traderQuery?.data?.trader?.bio}</p>
+          <h1 className="font-semibold text-center md:text-left capitalize">{traderQuery?.data?.trader?.fullname}</h1>
+          <p className=" font-medium capitalize text-sm text-center md:pt-10">{traderQuery?.data?.trader?.bio}</p>
         </div>
       </div>
       <Tabs defaultValue="items" className="w-full border-t-[1px] border-gray-400 dark:border-[#262626] ">
@@ -69,7 +69,7 @@ export default function Profile() {
             <h3 className="">CONTACT</h3>
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="items" className={`grid grid-cols-3 relative lg:grid-cols-5 gap-5 ${isItemSliderOpen ? '' : 'overflow-hidden'}`}>
+        <TabsContent value="items" className={`grid sm:grid-cols-2 z-0 md:grid-cols-3 relative lg:grid-cols-5 gap-5 ${isItemSliderOpen ? '' : 'overflow-hidden'}`}>
           <div className={`organizations  bg-white dark:bg-[#212225] text-white  rounded-md w-full min-h-full absolute top-0 left-0 z-10 ${ isItemSliderOpen ? 'translate-x-0' : 'translate-x-full'} transition-all duration-500`}>
                   <div className="close flex">
                     <button onClick={() => setIsItemSliderOpen(false)} className="p-5 rounded-xl">
@@ -117,13 +117,13 @@ export default function Profile() {
             ))}
         </TabsContent>
         <TabsContent value="contact">
-          <div className="contacme">
-            <h1 className="text-xl font-semibold ml-10">Contact Information</h1>
-            <div className="info ml-20 mt-10 flex gap-2 font-semibold">
+          <div className="contacme pb-10 md:pb-0">
+            <h1 className="text-xl font-semibold md:ml-10">Contact Information</h1>
+            <div className="info md:ml-20 mt-10 flex gap-2 font-semibold">
               <h3 className="opacity-70">Mobile Number:</h3>
               <h4>{traderQuery?.data?.trader?.mobile_number ?? "09123456789"}</h4>
             </div>
-            <div className="info ml-20 mt-5 flex gap-2 font-semibold">
+            <div className="info md:ml-20 mt-5 flex gap-2 font-semibold">
               <h3 className="opacity-70">Email Address:</h3>
               <h4>{traderQuery?.data?.trader?.email ?? "trader@email.com"}</h4>
             </div>
