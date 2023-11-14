@@ -88,7 +88,7 @@ function Forgot() {
 
         <div className="forgot-container h-full w-full flex mt-20 justify-center">
             <form onSubmit={handleSubmit(handleForgot)} className='w-10/12 sm:w-6/12 md:w-5/12 lg:w-4/12 px-5 py-3 bg-uno dark:bg-[#212225] shadow-2xl rounded-3xl flex flex-col mt-5 mb-10'>
-                <h2 className='text-center pt-10 pb-2 font-extrabold tracking-wider text-2xl text-dos'>Forgot Password?</h2>
+                <h2 className='text-center pt-10 pb-2 font-extrabold tracking-wider text-2xl text-dos break-words'>Forgot Password?</h2>
                 <div className="fullname w-full font-medium">
                     <p className="text-gray-400 p-3 break-words text-center text-sm">Enter your email address you're using for your account below and we will send you a password reset link.</p>
                         <label className="text-dos text-xs">Email address</label>
