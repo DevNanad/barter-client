@@ -97,27 +97,27 @@ export default function Editcontact() {
     }
 
   return (
-    <div className="">
-        <h2 className="mt-10 ml-10 text-2xl">Contact information</h2>
-        <div className="email mt-10 mb-5 flex items-center  py-1">
-            <aside className="px-8 flex justify-end basis-1/4">
+    <div className=" pb-20 md:pb-0">
+        <h2 className="sm:mt-10 ml-2 sm:ml-10 text-lg md:text-2xl">Contact information</h2>
+        <div className="email mt-10 px-5 md:px-0 mb-5 flex items-center  py-1">
+            <aside className="md:px-8 flex justify-end md:basis-1/4">
                 <span>
                     <HiMail className="w-8 h-8" />
                 </span>
             </aside>
-            <div className="email flex gap-3 basis-3/4">
-                <h3>{traderQuery?.data?.trader?.email}</h3>
+            <div className="email text-sm md:text-base flex md:flex-row flex-col md:gap-3 md:basis-3/4">
+                <h3 className="break-words">{traderQuery?.data?.trader?.email}</h3>
                 <BiEdit onClick={() => setIsUpdateEmailOpen(true)} className="w-6 h-6 text-blue-500 dark:text-sky-500 cursor-pointer"/>
             </div>
         </div>
-        <div className="number mt-10 mb-5 flex items-center  py-1">
-            <aside className="px-8 flex justify-end basis-1/4">
+        <div className="number px-5 md:px-0 md:mt-10 md:mb-5 flex flex-col md:flex-row md:items-center  py-1">
+            <aside className="md:px-8 flex md:justify-end md:basis-1/4">
                 <h5>Mobile Number:</h5>
             </aside>
             {traderQuery.isLoading
                 ? <div className="loading">Loading...</div>
-                : <div  className=" flex flex-col gap-1 basis-3/4">
-                    <form onSubmit={mobileHandleSubmit(handleChangeMobile)} className="flex items-center gap-5">
+                : <div  className=" flex flex-col gap-1 md:basis-3/4">
+                    <form onSubmit={mobileHandleSubmit(handleChangeMobile)} className="flex flex-col md:flex-row md:items-center gap-5">
                         <input
                         {...mobileRegister("mobile_number")}
                         type="text"
@@ -127,10 +127,10 @@ export default function Editcontact() {
                         className="rounded focus:outline-none px-4 py-2 bg-transparent border border-gray-400 dark:border-gray-500 "
                         />
                         {isMobileUpdating
-                            ?  <button className={`py-2 px-6 font-bold bg-[#0095F6] rounded-lg opacity-50`} disabled>
+                            ?  <button className={`py-2 px-6 font-bold text-white bg-[#0095F6] rounded-lg opacity-50`} disabled>
                             Updating...
                             </button>
-                            :  <button type="submit" className={`py-2 px-6 font-bold bg-[#0095F6] rounded-lg ${!mobileIsDirty ? "opacity-50" : ''}`} disabled={!mobileIsDirty}>
+                            :  <button type="submit" className={`py-2 px-6 font-bold text-white bg-[#0095F6] rounded-lg ${!mobileIsDirty ? "opacity-50" : ''}`} disabled={!mobileIsDirty}>
                             Update
                             </button>
                         }
@@ -153,10 +153,10 @@ export default function Editcontact() {
                     <input {...emailRegister("new_email")} className="px-4 py-2 bg-uno dark:bg-transparent dark:text-gray-200 rounded-lg text-gray-900 text-md outline-none border-solid border-[1px] mb-3 border-gray-400 dark:border-zinc-700 w-full tracking-wider" type="text" placeholder="yournew@email.com" />
                     
                     {isEmailUpdating
-                        ?  <button className={`py-2 px-6 font-bold bg-[#0095F6] rounded-lg opacity-50`} disabled>
+                        ?  <button className={`py-2 px-6 font-bold text-white bg-[#0095F6] rounded-lg opacity-50`} disabled>
                         OTP Sending...
                         </button>
-                        :  <button type="submit" className={`py-2 px-6 font-bold bg-[#0095F6] rounded-lg ${!emailIsDirty ? "opacity-50" : ''}`} disabled={!emailIsDirty}>
+                        :  <button type="submit" className={`py-2 px-6 font-bold text-white bg-[#0095F6] rounded-lg ${!emailIsDirty ? "opacity-50" : ''}`} disabled={!emailIsDirty}>
                         Send OTP
                         </button>
                     }

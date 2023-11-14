@@ -95,11 +95,11 @@ export default function Editprofile() {
   }
 
   return (
-    <div className="text-white">
-      <h2 className="mt-10 ml-10 text-2xl">Edit profile</h2>
+    <div className="text-gray-700 pb-20 md:pb-0 dark:text-gray-100">
+      <h2 className="sm:mt-10 ml-2 sm:ml-10 text-lg md:text-2xl">Edit profile</h2>
       {/* ... (profile picture and image upload) ... */}
-        <div className="img-holder mt-10 mb-5 flex flex-row">
-          <div className="px-8 flex justify-end items-center basis-1/4"> 
+        <div className="img-holder mt-10 mb-5 px-3 mdpx-0 flex justify-center md:justify-start flex-row">
+          <div className="md:px-8 flex md:justify-end items-center md:basis-1/4"> 
             {traderQuery?.isLoading
               ? <div className="profile w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-500"></div>
               : <img
@@ -118,13 +118,13 @@ export default function Editprofile() {
           />
 
           {traderQuery?.isLoading
-            ? <div className="btn flex basis-3/4 mr-20 flex-col justify-center gap-1">
+            ? <div className="btn flex md:basis-3/4 md:mr-20 flex-col justify-center gap-1">
               <div className="un h-3 rounded-md bg-gray-300 dark:bg-gray-400 w-20"></div>
               <div className="un h-3 rounded-md bg-gray-300 dark:bg-gray-400 w-20"></div>
             </div>
-            : <div className="choose-btn basis-3/4 mr-20">
+            : <div className="choose-btn md:basis-3/4 md:mr-20">
                 <div className="username flex gap-3">
-                  <h3>{traderQuery?.data?.trader.username}</h3>
+                  <h3 className="text-sm md:text-base">{traderQuery?.data?.trader.username}</h3>
                   <BiEdit onClick={() => setIsUpdateUsernameOpen(true)} className="w-6 h-6 text-blue-500 dark:text-sky-500 cursor-pointer"/>
                 </div>
                 {isProfileUpdating ? (
@@ -134,7 +134,7 @@ export default function Editprofile() {
                   ) : (
                     <h3
                       onClick={handleButtonClick}
-                      className="text-blue-500 dark:text-sky-500 font-semibold cursor-pointer"
+                      className="text-blue-500 text-sm md:text-base dark:text-sky-500 font-semibold cursor-pointer"
                     >
                       Change picture
                     </h3>
@@ -148,13 +148,13 @@ export default function Editprofile() {
         ? <div className="flex justify-center">Loading...</div>
         : <div className="infos">
           <form onSubmit={handleSubmit(handleChangeProfileInfo)}>
-            <div className="bio flex flex-row mb-5">
-              <aside className="px-8 text-right basis-1/4 mt-2">Bio</aside>
-              <div className="text-area basis-3/4 mr-20 flex flex-col">
+            <div className="bio px-3 md:px-0 flex flex-col md:flex-row mb-5">
+              <aside className="md:px-8 md:text-right md:basis-1/4 mt-2">Bio</aside>
+              <div className="text-area md:basis-3/4 md:mr-20 flex flex-col">
                 <textarea
                   {...register("bio")}
                   defaultValue={bio}
-                  className="rounded focus:outline-none px-4 py-2 bg-gray-400 dark:bg-gray-500"
+                  className="rounded focus:outline-none px-4 py-2 bg-gray-300 dark:bg-gray-500"
                   id="bio"
                   rows={3}
                 />
@@ -165,9 +165,9 @@ export default function Editprofile() {
                 )}
               </div>
             </div>
-            <div className="fullname flex flex-row mb-5">
-              <aside className="px-8 text-right basis-1/4 mt-2">Fullname</aside>
-              <div className="fullname-input basis-3/4 mr-20 flex flex-col">
+            <div className="fullname px-3 md:px-0 flex flex-col md:flex-row mb-5">
+              <aside className="md:px-8 md:text-right md:basis-1/4 mt-2">Fullname</aside>
+              <div className="fullname-input md:basis-3/4 md:mr-20 flex flex-col">
                 <input
                   type="text"
                   {...register("fullname")}
@@ -182,14 +182,14 @@ export default function Editprofile() {
                 )}
               </div>
             </div>
-            <div className="submit flex flex-row mb-5">
-              <aside className="px-8 basis-1/4 mt-2"></aside>
-              <div className="rounded basis-3/4 mr-20">
+            <div className="submit flex flex-row justify-center md:justify-start mb-5">
+              <aside className="md:px-8 md:basis-1/4 mt-2"></aside>
+              <div className="rounded md:basis-3/4 md:mr-20">
               {isProfileInfoUpdating
-                ?  <button className={`py-2 px-6 font-bold bg-[#0095F6] rounded-lg opacity-50`} disabled>
+                ?  <button className={`py-2 px-6 font-bold text-white bg-[#0095F6] rounded-lg opacity-50`} disabled>
                 Updating...
                 </button>
-                :  <button type="submit" className={`py-2 px-6 font-bold bg-[#0095F6] rounded-lg ${!isDirty ? "opacity-50" : ''}`} disabled={!isDirty}>
+                :  <button type="submit" className={`py-2 px-6 font-bold text-white bg-[#0095F6] rounded-lg ${!isDirty ? "opacity-50" : ''}`} disabled={!isDirty}>
                 Update
                 </button>
               }
