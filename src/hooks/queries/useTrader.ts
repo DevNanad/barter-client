@@ -381,6 +381,79 @@ export const useUpdateProfile = () => {
   })
 }
 
+//QUERY FOR UPDATING TRADER PASSWORD
+export const useChangePassword = () => {
+  const queryClient = useQueryClient()
+  const axiosPrivate = useAxiosPrivate()
+  return useMutation({
+      mutationFn:async (newData: {user_id:string, current: string, new_password: string}) => {
+          const response = await axiosPrivate.patch(`/user/change-password`, {
+            user_id: newData.user_id,
+            current: newData.current,
+            new_password: newData.new_password,
+          } )
+          return response.data
+      },
+      onSuccess: async (data) => {
+          if(data.message === 'success'){
+            await queryClient.invalidateQueries({
+              queryKey: ['trader'],
+              exact: true
+            })
+            toast.success('Password Updated!',{
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            })
+          }
+      },
+      onError: (error:any) => {
+          if (error.message === 'Network Error') {
+              toast.error('Server Unavailable',{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            } else if(error.response.data?.message){
+              toast.error(error.response.data?.message,{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            }else {
+              // Handle other errors
+              error.response.data.errors?.map((err:any) => {
+                toast.error(err.msg,{
+                  position: "top-center",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                })
+              })
+            }
+      }
+  })
+}
+
 //QUERY FOR UPDATING TRADER PROFILE INFO
 export const useUpdateProfileInfo = () => {
   const queryClient = useQueryClient()
