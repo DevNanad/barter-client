@@ -48,12 +48,12 @@ function Login() {
                 useAuthStore.setState({ user_id: responseData.user_id})
                 localStorage.setItem('user_id', responseData.user_id)
                 navigate('/trader', {replace: true})
-            }else if (responseData.user_type === 'advertiser') {
-                //navigate to advertiser dashboard
+            }else if (responseData.user_type === 'admin') {
+                //navigate to admin dashboard
                 useAuthStore.setState({ token: JSON.stringify(responseData)})
                 useAuthStore.setState({ user_id: responseData.user_id})
                 localStorage.setItem('user_id', responseData.user_id)
-                navigate('/advertiser', {replace: true})
+                navigate('/admin', {replace: true})
             }else {
                 console.log("No role specified");
             }

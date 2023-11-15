@@ -108,7 +108,6 @@ export const useProfile = (username:string|undefined) =>{
 
 //QUERY FOR ADDING ITEM
 export const useAddItem = () => {
-  const queryClient = useQueryClient()
   const axiosPrivate = useAxiosPrivate()  
   return useMutation({
       mutationFn: async (newItem: {
@@ -125,13 +124,81 @@ export const useAddItem = () => {
           return response.data
       },
       onSuccess: async (data) => {
+
+        if(data.message === 'success'){
+          toast.success('Item Added!',{
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          })
+        }
+      },
+      onError: (error:any) => {
+          if (error.message === 'Network Error') {
+            toast.error('Server Unavailable',{
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            })
+          } else if(error.response.data?.message){
+            toast.error(error.response.data.message,{
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            })
+          }else {
+            // Handle other errors
+            error.response.data.errors?.map((err:any) => {
+              toast.error(err.msg,{
+                  position: "top-center",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+              })
+            })
+          } 
+      }
+  })
+}
+//QUERY FOR ADDING COIN
+export const useAddCoin = () => {
+  const queryClient = useQueryClient()
+  const axiosPrivate = useAxiosPrivate()  
+  return useMutation({
+      mutationFn: async (newItem: {
+        username: string,
+        coin: string
+      }) =>{
+          const response = await axiosPrivate.post('/item/add-coin', newItem)
+          return response.data
+      },
+      onSuccess: async (data) => {
         await queryClient.invalidateQueries({
-            queryKey: ['elections'],
+            queryKey: ['trader'],
             exact: true
         })
 
         if(data.message === 'success'){
-          toast.success('Item Added!',{
+          toast.success('Coin Added!',{
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,

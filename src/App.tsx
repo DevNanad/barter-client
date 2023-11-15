@@ -4,7 +4,6 @@ import Verify from "./pages/Verify";
 import Login from "./pages/Login";
 import Forgot from "./pages/Forgot";
 import Reset from "./pages/Reset";
-import Advertiser from "./pages/advertiser/Advertiser";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -19,6 +18,7 @@ import Profile from "./pages/trader/Profile";
 import Market from "./pages/trader/Market";
 import Editprofile from "./pages/trader/Editprofile";
 import Editcontact from "./pages/trader/Editcontact";
+import Admin from "./pages/admin/Admin";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -96,8 +96,8 @@ const router = createBrowserRouter([
         ]
       },
       {
-        path: 'advertiser',
-        element: <Protected element={<Advertiser/>}/> 
+        path: 'admin',
+        element: <Protected element={<Admin/>}/> 
       }
     ]
   }
