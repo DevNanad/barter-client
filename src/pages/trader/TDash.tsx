@@ -18,16 +18,14 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../../../@/components/ui/avatar"
 import { Moon, Sun } from 'lucide-react'
 import { useAuthStore } from '../../hooks/state'
-import { ChangeEvent, ReactNode, useState } from 'react'
 import Modal from '../../components/Modal'
 import { ZodType, z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { uploadCloudinary } from '../../api/upload'
 import { ToastContainer } from 'react-toastify'
-import Radio, { RadioGroup } from "../../components/Radio"
-import { Sparkle, Gem, Crown } from "lucide-react"
 import StripeContainer from '../../components/StripeContainer'
+import { useState } from 'react'
 
 type AddItemFormData = {
   name: string;
@@ -366,49 +364,35 @@ export default function TDash() {
                   : <button type="submit" className='font-bold py-2 text-white rounded-lg bg-green-500'>Add</button>
                   
                 }
-                <button onClick={() => setIsOpenAddItem(false)} className='font-bold py-2 text-white rounded-lg bg-gray-500 mt-2'>Cancel</button>
 
                 
               </form>
+              <button onClick={() => setIsOpenAddItem(false)} className='font-bold py-2 text-white rounded-lg w-full bg-gray-500 mt-2'>Cancel</button>
             </div>
           </Modal>
           {/* ADD ITEM MODAL */}
           {/* PRICING MODAL */}
           <Modal open={isOpenPricing} onClose={() => setIsOpenPricing(false)}>
-            <div className="bg-white p-5">
-              <h2 className="text-2xl font-bold text-center tracking-tight">Choose Your Plan</h2>
-              <hr className="my-3" />
-              <RadioGroup value={plan} onChange={(e:ChangeEvent<HTMLInputElement>) => setPlan(e.target.value)}>
-                <div className="flex flex-col md:grid grid-cols-3 gap-4 justify-center">
-                  <Radio value="basic">
-                    <Plan
-                      icon={<Sparkle />}
-                      title="Basic"
-                      features={["5 Coins"]}
-                      price={5}
-                    />
-                  </Radio>
-                  <Radio value="standard">
-                    <Plan
-                      icon={<Gem />}
-                      title="Standard"
-                      features={["21 Coins"]}
-                      price={20}
-                    />
-                  </Radio>
-                  <Radio value="premium">
-                    <Plan
-                      icon={<Crown />}
-                      title="Premium"
-                      features={["105 coins"]}
-                      price={100}
-                    />
-                  </Radio>
+            <div className="bg-white px-5 py-3">
+              <h2 className="text-2xl font-bold text-center tracking-tight">TopUp Coin</h2>
+              <div className="note">
+                <h5 className='opacity-70 text-center text-sm'>1 Coin is 5 pesos, please indicate username.</h5>
+              </div>
+              <div className="gcash flex gap-2 font-semibold items-center">
+                <img src="https://1000logos.net/wp-content/uploads/2023/05/GCash-Logo.png" className='h-10' />
+                <h3>09481320004</h3>
+              </div>
+              <hr />
+              <div className="coin flex flex-col">
+                <h2 className='text-center pt-2 font-bold'>Card</h2>
+                <div className="note">
+                  <h5 className='opacity-70 text-center text-sm'>Dollar base, minimum $0.50 or 6 Coins</h5>
                 </div>
-              </RadioGroup>
-              <hr className="my-3" />
+                <label>Enter number of coin</label>
+                <input className='py-1 font-bold px-5 text-lg focus:outline-none bg-transparent border-2 border-gray-300 dark:border-gray-600 rounded-md ' value={plan} onChange={(e:any) => setPlan(e.target.value)} type="text" />
 
-              <div className="card pt-5">
+              </div>
+              <div className="card py-1">
                 <StripeContainer plan={plan}/>
               </div>
             </div>
@@ -445,24 +429,4 @@ export default function TDash() {
       </>
     )
     
-}
-
-interface PlanProps {
-  icon: ReactNode;
-  title: string;
-  features: string[];
-  price: number;
-}
-
-function Plan({ icon, title, features, price }: PlanProps) {
-  return (
-    <div className="flex gap-4 items-center">
-      {icon}
-      <div>
-        <h3 className="text-lg font-semibold">{title}</h3>
-        <p className="text-sm">{features.join(" · ")}</p>
-      </div>
-      <span className="ml-auto font-medium">${price}</span>
-    </div>
-  );
 }

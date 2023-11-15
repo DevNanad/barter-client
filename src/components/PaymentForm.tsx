@@ -27,7 +27,7 @@ const CARD_OPTIONS: StripeCardElementOptions = {
   };
   
 
-export default function PaymentForm({plan}:any) {
+export default function PaymentForm({coin}:any) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const {user_id} = useAuthStore((state) => state)
@@ -63,14 +63,14 @@ export default function PaymentForm({plan}:any) {
       try {
         setErrorMessage('')
         const { id } = paymentMethod;
+        console.log(coin);
+        
         const response = await axiosPrivate.post("/user/pay", {
             user_id,
-            plan,
+            coins: coin,
             id,
         });
 
-        console.log(response.data);
-        
         if(response.data.message === 'success'){
             toast.success('Payment Success',{
                 position: "top-center",
@@ -91,6 +91,43 @@ export default function PaymentForm({plan}:any) {
 
       } catch (error:any) {
         setErrorMessage("An error occurred while processing the payment.");
+        if (error.message === 'Network Error') {
+          toast.error('Server Unavailable',{
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          })
+        } else if(error.response.data?.error){
+          toast.error(error.response.data.error,{
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          })
+        }else {
+          // Handle other errors
+          error.response.data.errors?.map((err:any) => {
+            toast.error(err.msg,{
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            })
+          })
+        } 
       }
     }
 
@@ -106,11 +143,11 @@ export default function PaymentForm({plan}:any) {
             </div>
           </fieldset>
           {loading ? (
-            <button className="block text-base w-full my-5 px-6 py-3
+            <button className="block text-base w-full px-6 py-3
             bg-violet-800 hover:bg-violet-700 shadow-md inset-shadow rounded-md text-white font-semibold cursor-pointer transition-all duration-100 ease-in-out" disabled>Loading...</button>
           ) : (
-            <button className={`block text-base w-full my-5 px-6 py-3
-            bg-violet-800 hover:bg-violet-700 shadow-md inset-shadow rounded-md text-white font-semibold cursor-pointer transition-all duration-100 ease-in-out ${plan === '' ? 'cursor-not-allowed' : ''} `} disabled={plan === ''}>Pay</button>
+            <button className={`block text-base w-full px-6 py-3
+            bg-violet-800 hover:bg-violet-700 shadow-md inset-shadow rounded-md text-white font-semibold cursor-pointer transition-all duration-100 ease-in-out ${coin === '' ? 'cursor-not-allowed' : ''} `} disabled={coin === ''}>Pay</button>
           )}
         </form>
       {errorMessage && <div className="error-message text-center text-red-400">{errorMessage}</div>}

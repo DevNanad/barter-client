@@ -9,7 +9,7 @@ const stripeTestPromise = loadStripe(PUBLIC_KEY)
 export default function StripeContainer({plan}:any) {
   return (
     <Elements stripe={stripeTestPromise}>
-        <PaymentForm plan={plan} />
+        <PaymentForm coin={plan} />
     </Elements>
   )
 }
