@@ -20,6 +20,9 @@ export default function Settings() {
           <NavLink to='/trader/settings/contact' className=" py-3 px-4 font-bold hover:bg-gray-300 dark:hover:bg-gray-700 rounded-lg" >
             Contact information
           </NavLink>
+          <NavLink to='/trader/settings/password' className=" py-3 px-4 font-bold hover:bg-gray-300 dark:hover:bg-gray-700 rounded-lg" >
+            Change password
+          </NavLink>
         </div>
       </div>
       <div className="side-content flex-grow overflow-y-auto md:py-10">
