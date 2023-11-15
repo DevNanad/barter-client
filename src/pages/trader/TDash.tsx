@@ -51,6 +51,7 @@ export default function TDash() {
     const [isOpenAddItem, setIsOpenAddItem] = useState(false)
     const [isOpenPricing, setIsOpenPricing] = useState(false)
     const [isOpenCoupon, setIsOpenCoupon] = useState(false)
+    const [isOpenContact, setIsOpenContact] = useState(false)
     const [images, setImages] = useState([])
     const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
@@ -227,6 +228,8 @@ export default function TDash() {
                     </div>
                     
                     <button onClick={() => handleCoupon()} className="font-semibold py-2 px-10 hover:bg-violet-600 dark:hover:bg-zinc-600 hover:opacity-40 dark:hover:opacity-100 rounded-md">Coupon</button>
+
+                    <button onClick={() => setIsOpenContact(true)} className="font-semibold py-2 px-10 hover:bg-violet-600 dark:hover:bg-zinc-600 hover:opacity-40 dark:hover:opacity-100 rounded-md">Contact</button>
                     
                     <Link to="/trader/settings" className="font-semibold py-2 px-10 hover:bg-violet-600 text-center dark:hover:bg-zinc-600 hover:opacity-40 dark:hover:opacity-100 rounded-md">Settings</Link>
 
@@ -430,6 +433,14 @@ export default function TDash() {
             </div>
           </Modal>
           {/* COUPON MODAL */}
+          {/* CONTACT MODAL */}
+          <Modal open={isOpenContact} onClose={() => setIsOpenContact(false)}>
+            <div className="contact p-5 gap-5 bg-white ">
+              <h1 className='text-lg text-center font-bold pb-5'>Contact Us</h1>
+              <h5 className='break-words'>If you have any concerns just contact us @ <span className='text-blue-400'>contactbarterb@gmail.com</span></h5>
+            </div>
+          </Modal>
+          {/* CONTACT MODAL */}
       </div>
       </>
     )
