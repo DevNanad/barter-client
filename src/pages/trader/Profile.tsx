@@ -97,7 +97,7 @@ export default function Profile() {
             </div>
           {traderQuery?.data?.trader.Products?.length === 0
             ? <div className="">No Item</div>
-            : traderQuery?.data?.trader.Products.map((item: any) => (
+            : traderQuery?.data?.trader.Products?.map((item: any) => (
               <div key={item?.id} className="item text-gray-600 dark:text-gray-400  bg-white dark:bg-[#212225] rounded-md overflow-hidden flex flex-col shadow-lg h-fit pb-3">
                   <Carousel slides={item.image} height="h-40" object="object-cover"/>
                   <div className="flex-1 px-3 flex flex-col">

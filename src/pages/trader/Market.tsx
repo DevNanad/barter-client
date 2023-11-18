@@ -74,7 +74,7 @@ export default function Market() {
           className="py-2 px-4 md:px-5 font-semibold w-full text-left text-gray-700 dark:text-gray-200 bg-white dark:bg-[#212225] dark:hover:bg-zinc-700 hover:bg-gray-100 text-sm rounded-sm hover:text-violet-500"
         >
           <option value="">Select a category</option>
-          {categories.map((category) => (
+          {categories?.map((category) => (
             <option key={category.id} value={category.category}>
               {category.category}
             </option>
@@ -85,7 +85,7 @@ export default function Market() {
         <div className="category-nav hidden bg-white dark:bg-[#212225] sm:col-span-3 lg:col-span-2 md:flex flex-col items-start text-[#00171f] dark:text-gray-200 gap-1 rounded-lg">
           <h3 className="text-center text-xs md:text-sm w-full border-violet-400 dark:border-[#262626] uppercase font-bold border-b-[1px] py-4">Categories</h3>
           <hr className="bg bg-gray-500" />
-          {categories.map((category) => (
+          {categories?.map((category) => (
             <button onClick={() => getCategory(category.category)} key={category.id} className="category py-2 md:px-5 font-semibold w-full text-left  dark:hover:bg-zinc-700 hover:bg-gray-100 text-sm rounded-sm hover:text-violet-500">
               {category.category}
             </button>
