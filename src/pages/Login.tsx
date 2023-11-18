@@ -12,7 +12,7 @@ import shoppingcart from '../assets/shoppingcart.json'
 import Lottie from 'lottie-react';
 
 type LoginFormData = {
-    usernameORemail: string;
+    username: string;
     password: string;
 }
 
@@ -22,7 +22,7 @@ function Login() {
     const navigate = useNavigate();
 
     const schema: ZodType<LoginFormData> = z.object({
-        usernameORemail: z.string().min(1, {message: "Username or Email is required"}).max(255),
+        username: z.string().min(1, {message: "Username is required"}).max(255),
         password: z.string().min(1, {message: "Password is required"}).max(255),
 
     })
@@ -37,7 +37,7 @@ function Login() {
     const handleLogin = async (data: LoginFormData) => {
         setIsLoading(true)
         try {
-            const res = await login(data.usernameORemail, data.password)
+            const res = await login(data.username, data.password)
 
             const responseData = await res.data
             setIsLoading(false)
@@ -109,16 +109,16 @@ function Login() {
                 <form onSubmit={handleSubmit(handleLogin)} className='w-10/12 lg:w-7/12 p-5 bg-uno dark:bg-[#212225] rounded-xl flex flex-col shadow-2xl'>
                     <h2 className='text-center text-dos md:py-5 font-extrabold tracking-wider text-2xl'>Log in</h2>
                     <div className="fullname w-full font-medium">
-                        <label className="text-dos text-xs">Username or Email</label>
+                        <label className="text-dos text-xs">Username</label>
                         <br />
                             <input
                             className="px-4 py-2 bg-uno dark:bg-transparent dark:text-gray-200 rounded-lg text-gray-900 text-md outline-none border-solid border-[1px] border-gray-400  dark:border-zinc-700 w-full tracking-wider"
                             type="text"
-                            {...register("usernameORemail")}
-                            placeholder="Username or email"
+                            {...register("username")}
+                            placeholder="Username"
                             required
                         />
-                        {errors.usernameORemail && <span className="text-red-400 text-center text-sm">{errors.usernameORemail.message}</span>}
+                        {errors.username && <span className="text-red-400 text-center text-sm">{errors.username.message}</span>}
                     </div>
 
 
